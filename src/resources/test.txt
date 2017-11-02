@@ -1,15 +1,15 @@
-﻿name=Станислав Иванов Желязков 
-age=21 
-lengthOfService=3 
-<<>> 
-name=Константин Пламенов Лозанов 
-age=45 
-lengthOfService=8 
-<<>> 
-name=Петър Василев Кожухаров 
-age=32 
-lengthOfService=2 
-<<>> 
-name=Асен Петров Костадинов 
-age=35 
-lengthOfService=5.5 
+﻿name=Станислав Иванов Желязков
+age=21
+lengthOfService=3
+<<>>
+name=Константин Пламенов Лозанов
+age=45
+lengthOfService=8
+<<>>
+name=Петър Василев Кожухаров
+age=32
+lengthOfService=2
+<<>>
+name=Асен Петров Костадинов
+age=35
+lengthOfService=5.5

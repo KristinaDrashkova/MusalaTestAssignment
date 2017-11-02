@@ -1,36 +1,42 @@
+import exeptions.NoEmployeesException;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class EmployeeRepository {
+class EmployeeRepository {
     private List<Employee> employeeList;
 
-    public EmployeeRepository() {
+    EmployeeRepository() {
         this.employeeList = new ArrayList<>();
     }
 
-    public void addEmployee(Employee employee) {
+    public List<Employee> getEmployeeList() {
+        return Collections.unmodifiableList(this.employeeList);
+    }
+
+    void addEmployee(Employee employee) {
         this.employeeList.add(employee);
     }
 
-    public double averageAgeOfEmployees() {
+    double averageAgeOfEmployees() {
         int employeesSumAges = this.employeeList.stream().mapToInt(Employee::getAge).sum();
         double size = this.employeeList.size() * 1.00;
         return  employeesSumAges / size;
     }
 
-    public double averageLengthOfServiceOfEmployees() {
+    double averageLengthOfServiceOfEmployees() {
         double employeeSumLengthOfService = this.employeeList.stream().mapToDouble(Employee::getLengthOfService).sum();
         double size = this.employeeList.size() * 1.00;
         return employeeSumLengthOfService / size;
     }
 
-    public double maximumLengthOfServiceOfEmployee() {
+    double maximumLengthOfServiceOfEmployee() {
         Optional<Employee> optionalMaxLengthOfServiceEmployee = this.employeeList.stream().max(Comparator.comparing(Employee::getLengthOfService));
         Employee employee = optionalMaxLengthOfServiceEmployee.get();
         return employee.getLengthOfService();
     }
 
-    public String mostCommonCharactersInEmployeesNames() {
+    String mostCommonCharactersInEmployeesNames() {
         StringBuilder sb = new StringBuilder();
         Map<Character, Integer> mostCommonCharactersMap = fillEmployeeNamesInToMap().entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))

@@ -1,5 +1,6 @@
 import exeptions.FileNotFoundCustomException;
 import exeptions.InvalidEntryParametersException;
+import exeptions.NoEmployeesException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -46,17 +47,21 @@ class EmployeeService {
                 Employee employee = new Employee(name, age, lengthOfService);
                 this.employeeRepository.addEmployee(employee);
             }
-            System.out.println("Average age of employees: " + employeeRepository.averageAgeOfEmployees());
-            System.out.println("First three most common characters: " + employeeRepository.mostCommonCharactersInEmployeesNames());
-            System.out.println("Average length of service of the employees: " + employeeRepository.averageLengthOfServiceOfEmployees());
-            System.out.println("Maximum length of service among all employees: " + employeeRepository.maximumLengthOfServiceOfEmployee());
+            if (this.employeeRepository.getEmployeeList().size() == 0) {
+                throw new NoEmployeesException("There are no employees");
+            } else {
+                System.out.println("Average age of employees: " + employeeRepository.averageAgeOfEmployees());
+                System.out.println("First three most common characters: " + employeeRepository.mostCommonCharactersInEmployeesNames());
+                System.out.println("Average length of service of the employees: " + employeeRepository.averageLengthOfServiceOfEmployees());
+                System.out.println("Maximum length of service among all employees: " + employeeRepository.maximumLengthOfServiceOfEmployee());
+            }
         } catch (IOException e) {
             try {
                 throw new FileNotFoundCustomException("Can not find this path:" + PATH);
             } catch (FileNotFoundCustomException ex) {
                 ex.printStackTrace();
             }
-        } catch (InvalidEntryParametersException e) {
+        } catch (InvalidEntryParametersException | NoEmployeesException e) {
             e.printStackTrace();
         }
     }
