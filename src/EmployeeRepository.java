@@ -1,49 +1,36 @@
-import exeptions.NoEmployeesException;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
-class EmployeeRepository {
+public class EmployeeRepository {
     private List<Employee> employeeList;
 
-    EmployeeRepository() {
+    public EmployeeRepository() {
         this.employeeList = new ArrayList<>();
     }
 
-    void addEmployee(Employee employee) {
+    public void addEmployee(Employee employee) {
         this.employeeList.add(employee);
     }
 
-    double averageAgeOfEmployees() {
+    public double averageAgeOfEmployees() {
         int employeesSumAges = this.employeeList.stream().mapToInt(Employee::getAge).sum();
         double size = this.employeeList.size() * 1.00;
         return  employeesSumAges / size;
     }
 
-    double averageLengthOfServiceOfEmployees() {
+    public double averageLengthOfServiceOfEmployees() {
         double employeeSumLengthOfService = this.employeeList.stream().mapToDouble(Employee::getLengthOfService).sum();
         double size = this.employeeList.size() * 1.00;
         return employeeSumLengthOfService / size;
     }
 
-    double maximumLengthOfServiceOfEmployee() {
-        Optional<Employee> optionalMaxLengthOfServiceEmployee =
-                this.employeeList.stream().max(Comparator.comparing(Employee::getLengthOfService));
-        Employee employee = null;
-        if (!optionalMaxLengthOfServiceEmployee.isPresent()) {
-            try {
-                throw new NoEmployeesException("There are no employees");
-            } catch (NoEmployeesException e) {
-                e.printStackTrace();
-            }
-        } else {
-            employee = optionalMaxLengthOfServiceEmployee.get();
-        }
-
+    public double maximumLengthOfServiceOfEmployee() {
+        Optional<Employee> optionalMaxLengthOfServiceEmployee = this.employeeList.stream().max(Comparator.comparing(Employee::getLengthOfService));
+        Employee employee = optionalMaxLengthOfServiceEmployee.get();
         return employee.getLengthOfService();
     }
 
-    String mostCommonCharactersInEmployeesNames() {
+    public String mostCommonCharactersInEmployeesNames() {
         StringBuilder sb = new StringBuilder();
         Map<Character, Integer> mostCommonCharactersMap = fillEmployeeNamesInToMap().entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))

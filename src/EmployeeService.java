@@ -1,4 +1,5 @@
 import exeptions.FileNotFoundCustomException;
+import exeptions.InvalidEntryParametersException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,7 +8,7 @@ import java.util.regex.Pattern;
 
 class EmployeeService {
 
-    private final static String PATH = "src\\resources\\test.txt";
+    private final static String PATH = "src/resources/test.txt";
     private EmployeeRepository employeeRepository;
 
     EmployeeService(EmployeeRepository employeeRepository) {
@@ -22,8 +23,12 @@ class EmployeeService {
             double lengthOfService = 0;
             while ((currentLine = br.readLine()) != null) {
                 if (currentLine.trim().equals("<<>>")) {
-                    Employee employee = new Employee(name, age, lengthOfService);
-                    this.employeeRepository.addEmployee(employee);
+                    if (name.equals("") || age == 0 || lengthOfService == 0) {
+                        throw new InvalidEntryParametersException("Invalid entry parameters for employee");
+                    } else {
+                        Employee employee = new Employee(name, age, lengthOfService);
+                        this.employeeRepository.addEmployee(employee);
+                    }
                 }
                 String[] lineData = currentLine.split(Pattern.quote("="));
                 switch (lineData[0]) {
@@ -35,8 +40,12 @@ class EmployeeService {
                         break;
                 }
             }
-            Employee employee = new Employee(name, age, lengthOfService);
-            this.employeeRepository.addEmployee(employee);
+            if (name.equals("") || age == 0 || lengthOfService == 0) {
+                throw new InvalidEntryParametersException("Invalid entry parameters for employee");
+            } else {
+                Employee employee = new Employee(name, age, lengthOfService);
+                this.employeeRepository.addEmployee(employee);
+            }
             System.out.println("Average age of employees: " + employeeRepository.averageAgeOfEmployees());
             System.out.println("First three most common characters: " + employeeRepository.mostCommonCharactersInEmployeesNames());
             System.out.println("Average length of service of the employees: " + employeeRepository.averageLengthOfServiceOfEmployees());
@@ -47,6 +56,8 @@ class EmployeeService {
             } catch (FileNotFoundCustomException ex) {
                 ex.printStackTrace();
             }
+        } catch (InvalidEntryParametersException e) {
+            e.printStackTrace();
         }
     }
 }
