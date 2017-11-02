@@ -1,4 +1,3 @@
-import exeptions.NoEmployeesException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -10,7 +9,7 @@ class EmployeeRepository {
         this.employeeList = new ArrayList<>();
     }
 
-    public List<Employee> getEmployeeList() {
+    List<Employee> getEmployeeList() {
         return Collections.unmodifiableList(this.employeeList);
     }
 
