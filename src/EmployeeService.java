@@ -23,30 +23,35 @@ class EmployeeService {
             int age = 0;
             double lengthOfService = 0;
             while ((currentLine = br.readLine()) != null) {
-                if (currentLine.trim().equals("<<>>")) {
-                    if (name.equals("") || age == 0 || lengthOfService == 0) {
-                        throw new InvalidEntryParametersException("Invalid entry parameters for employee");
-                    } else {
-                        Employee employee = new Employee(name, age, lengthOfService);
-                        this.employeeRepository.addEmployee(employee);
-                    }
-                }
                 String[] lineData = currentLine.split(Pattern.quote("="));
-                switch (lineData[0]) {
-                    case "name" : name = lineData[1].trim();
+                if (lineData.length == 1 || currentLine.trim().equals("<<>>")) {continue;}
+                String key = lineData[0];
+                String value = lineData[1];
+                switch (key) {
+                    case "name" :
+                        name = value.trim();
                         break;
-                    case "age" : age = Integer.parseInt(lineData[1].trim());
+                    case "age" :
+                        age = Integer.parseInt(value.trim());
                         break;
-                    case "lengthOfService" : lengthOfService = Double.parseDouble(lineData[1].trim());
-                        break;
+                    case "lengthOfService" : {
+                        lengthOfService = Double.parseDouble(value.trim());
+                        if (name.equals("") || age == 0 || lengthOfService == 0) {
+                            try {
+                                throw new InvalidEntryParametersException("Invalid parameters for employee");
+                            } catch (InvalidEntryParametersException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Employee employee = new Employee(name, age, lengthOfService);
+                            this.employeeRepository.addEmployee(employee);
+                        }
+                    } break;
+
                 }
+
             }
-            if (name.equals("") || age == 0 || lengthOfService == 0) {
-                throw new InvalidEntryParametersException("Invalid entry parameters for employee");
-            } else {
-                Employee employee = new Employee(name, age, lengthOfService);
-                this.employeeRepository.addEmployee(employee);
-            }
+
             if (this.employeeRepository.getEmployeeList().size() == 0) {
                 throw new NoEmployeesException("There are no employees");
             } else {
@@ -61,7 +66,7 @@ class EmployeeService {
             } catch (FileNotFoundCustomException ex) {
                 ex.printStackTrace();
             }
-        } catch (InvalidEntryParametersException | NoEmployeesException e) {
+        } catch (NoEmployeesException e) {
             e.printStackTrace();
         }
     }
