@@ -1,5 +1,5 @@
 package exeptions;
-//Made change
+//Made other change
 public class InvalidEntryParametersException extends Exception {
     public InvalidEntryParametersException(String message) {
         super(message);

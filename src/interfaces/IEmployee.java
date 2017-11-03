@@ -1,5 +1,5 @@
 package interfaces;
-//Made change
+//Made other change
 public interface IEmployee {
     String getName();
     int getAge();
