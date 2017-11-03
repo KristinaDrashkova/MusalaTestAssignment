@@ -1,5 +1,5 @@
 package exeptions;
-//Made other change
+//Made others change
 public class FileNotFoundCustomException extends Exception {
     public FileNotFoundCustomException(String message) {
         super(message);

@@ -1,5 +1,5 @@
 package exeptions;
-//Made other change
+//Made others change
 public class NoEmployeesException extends Exception{
     public NoEmployeesException(String message) {
         super(message);

@@ -1,6 +1,6 @@
 import exeptions.InvalidEntryParametersException;
 import interfaces.IEmployee;
-//Made other change
+//Made others change
 class Employee implements IEmployee {
     private String name;
     private int age;

@@ -1,5 +1,5 @@
 package interfaces;
-//Made other change
+//Made others change
 import java.util.List;
 
 public interface IEmployeeRepository {

@@ -1,4 +1,4 @@
-//Made other change
+//Made others change
 import interfaces.IEmployee;
 import interfaces.IEmployeeRepository;
 
