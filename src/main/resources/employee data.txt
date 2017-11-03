@@ -1,4 +1,4 @@
-﻿//Made others change
+﻿
 name=Станислав Иванов Желязков
 age=21
 lengthOfService=3
