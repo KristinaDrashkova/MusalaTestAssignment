@@ -1,27 +1,28 @@
 import exeptions.FileNotFoundCustomException;
-import exeptions.InvalidEntryParametersException;
 import exeptions.NoEmployeesException;
+import interfaces.IEmployee;
+import interfaces.IEmployeeRepository;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-class EmployeeService {
+class EmployeeService implements Runnable{
 
     private final static String PATH = "src/resources/test.txt";
-    private EmployeeRepository employeeRepository;
+    private IEmployeeRepository employeeRepository;
 
-    EmployeeService(EmployeeRepository employeeRepository) {
+    EmployeeService(IEmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
-    void run() {
+    public void run() {
         try (BufferedReader br = new BufferedReader(new FileReader(PATH))) {
             String currentLine;
             String name = "";
             int age = 0;
-            double lengthOfService;
+            double lengthOfService = 0;
             while ((currentLine = br.readLine()) != null) {
                 String[] lineData = currentLine.split(Pattern.quote("="));
                 if (lineData.length == 1 || currentLine.trim().equals("<<>>")) {continue;}
@@ -36,16 +37,8 @@ class EmployeeService {
                         break;
                     case "lengthOfService" : {
                         lengthOfService = Double.parseDouble(value.trim());
-                        if (name.equals("") || age == 0 || lengthOfService == 0) {
-                            try {
-                                throw new InvalidEntryParametersException("Invalid parameters for employee");
-                            } catch (InvalidEntryParametersException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            Employee employee = new Employee(name, age, lengthOfService);
-                            this.employeeRepository.addEmployee(employee);
-                        }
+                        IEmployee employee = new Employee(name, age, lengthOfService);
+                        this.employeeRepository.addEmployee(employee);
                     } break;
 
                 }

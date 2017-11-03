@@ -1,41 +1,45 @@
 
+import interfaces.IEmployee;
+import interfaces.IEmployeeRepository;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
-class EmployeeRepository {
-    private List<Employee> employeeList;
+class EmployeeRepository implements IEmployeeRepository {
+    private List<IEmployee> employeeList;
 
     EmployeeRepository() {
         this.employeeList = new ArrayList<>();
     }
 
-    List<Employee> getEmployeeList() {
+    public List<IEmployee> getEmployeeList() {
         return Collections.unmodifiableList(this.employeeList);
     }
 
-    void addEmployee(Employee employee) {
+    public void addEmployee(IEmployee employee) {
         this.employeeList.add(employee);
     }
 
-    double averageAgeOfEmployees() {
-        int employeesSumAges = this.employeeList.stream().mapToInt(Employee::getAge).sum();
+    public double averageAgeOfEmployees() {
+        int employeesSumAges = this.employeeList.stream().mapToInt(IEmployee::getAge).sum();
         double size = this.employeeList.size() * 1.00;
         return  employeesSumAges / size;
     }
 
-    double averageLengthOfServiceOfEmployees() {
-        double employeeSumLengthOfService = this.employeeList.stream().mapToDouble(Employee::getLengthOfService).sum();
+    public double averageLengthOfServiceOfEmployees() {
+        double employeeSumLengthOfService = this.employeeList.stream().mapToDouble(IEmployee::getLengthOfService).sum();
         double size = this.employeeList.size() * 1.00;
         return employeeSumLengthOfService / size;
     }
 
-    double maximumLengthOfServiceOfEmployee() {
-        Optional<Employee> optionalMaxLengthOfServiceEmployee = this.employeeList.stream().max(Comparator.comparing(Employee::getLengthOfService));
-        Employee employee = optionalMaxLengthOfServiceEmployee.get();
+    public double maximumLengthOfServiceOfEmployee() {
+        Optional<IEmployee> optionalMaxLengthOfServiceEmployee =
+                this.employeeList.stream().max(Comparator.comparing(IEmployee::getLengthOfService));
+        IEmployee employee = optionalMaxLengthOfServiceEmployee.get();
         return employee.getLengthOfService();
     }
 
-    String mostCommonCharactersInEmployeesNames() {
+    public String mostCommonCharactersInEmployeesNames() {
         List<Character> mostCommonCharactersList = fillEmployeeNamesInToMap().entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .limit(3).map(Map.Entry::getKey).collect(Collectors.toList());
@@ -46,7 +50,7 @@ class EmployeeRepository {
 
     private HashMap<Character, Integer> fillEmployeeNamesInToMap() {
         HashMap<Character, Integer> charactersInNames = new HashMap<>();
-        for (Employee employee : this.employeeList) {
+        for (IEmployee employee : this.employeeList) {
             for (char c : employee.getName().toCharArray()) {
                 if (!charactersInNames.containsKey(c)) {
                     charactersInNames.put(c, 0);
