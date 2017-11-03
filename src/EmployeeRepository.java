@@ -36,22 +36,12 @@ class EmployeeRepository {
     }
 
     String mostCommonCharactersInEmployeesNames() {
-        StringBuilder sb = new StringBuilder();
-        Map<Character, Integer> mostCommonCharactersMap = fillEmployeeNamesInToMap().entrySet().stream()
+        List<Character> mostCommonCharactersList = fillEmployeeNamesInToMap().entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .limit(3)
-                .collect(Collectors.toMap(
-                Map.Entry::getKey,
-                Map.Entry::getValue,
-                (e1, e2) -> e1,
-                LinkedHashMap::new
-        ));
-        for (Character character : mostCommonCharactersMap.keySet()) {
-            sb.append(character);
-            sb.append(", ");
-        }
+                .limit(3).map(Map.Entry::getKey).collect(Collectors.toList());
 
-        return sb.toString();
+
+        return mostCommonCharactersList.toString();
     }
 
     private HashMap<Character, Integer> fillEmployeeNamesInToMap() {

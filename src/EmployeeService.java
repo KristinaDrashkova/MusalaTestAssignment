@@ -21,7 +21,7 @@ class EmployeeService {
             String currentLine;
             String name = "";
             int age = 0;
-            double lengthOfService = 0;
+            double lengthOfService;
             while ((currentLine = br.readLine()) != null) {
                 String[] lineData = currentLine.split(Pattern.quote("="));
                 if (lineData.length == 1 || currentLine.trim().equals("<<>>")) {continue;}
