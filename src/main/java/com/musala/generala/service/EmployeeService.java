@@ -1,7 +1,9 @@
-package main.java;
+package main.java.com.musala.generala.service;
 
-import main.java.exeptions.NoEmployeesException;
-import main.java.interfaces.IEmployeeService;
+import main.java.com.musala.generala.models.Employee;
+import main.java.com.musala.generala.exeptions.NoEmployeesException;
+import main.java.com.musala.generala.interfaces.IEmployeeService;
+import main.java.com.musala.generala.repositories.EmployeeRepository;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -10,7 +12,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-class EmployeeService implements IEmployeeService {
+public class EmployeeService implements IEmployeeService {
 
     private final static String PATH = "src/main/resources/employee data.txt";
     private EmployeeRepository employeeRepository;

@@ -1,4 +1,4 @@
-package main.java.interfaces;
+package main.java.com.musala.generala.interfaces;
 
 import java.util.HashMap;
 import java.util.List;

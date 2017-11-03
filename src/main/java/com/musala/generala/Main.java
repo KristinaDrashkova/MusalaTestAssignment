@@ -1,6 +1,8 @@
-package main.java;
+package main.java.com.musala.generala;
 
-import main.java.interfaces.IEmployeeService;
+import main.java.com.musala.generala.interfaces.IEmployeeService;
+import main.java.com.musala.generala.repositories.EmployeeRepository;
+import main.java.com.musala.generala.service.EmployeeService;
 
 public class Main {
 

@@ -1,4 +1,4 @@
-package main.java;
+package main.java.com.musala.generala.models;
 
 public class Employee{
     private String name;

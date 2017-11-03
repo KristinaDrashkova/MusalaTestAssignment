@@ -1,4 +1,6 @@
-package main.java;
+package main.java.com.musala.generala.repositories;
+
+import main.java.com.musala.generala.models.Employee;
 
 import java.util.*;
 
