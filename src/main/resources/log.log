@@ -1,0 +1,17 @@
+2017-11-06 11:20:45 INFO  root:60 - Average age of employees: 33.25
+2017-11-06 11:20:45 INFO  root:61 - First three most common characters: [о, в, а]
+2017-11-06 11:20:45 INFO  root:63 - Average length of service of the employees: 4.625
+2017-11-06 11:20:45 INFO  root:65 - Maximum length of service among all employees: 8.0
+2017-11-06 11:26:34 ERROR root:69 - Could not find file: src/main/resources/employee  data.txt
+2017-11-06 11:27:01 INFO  root:59 - Average age of employees: 33.25
+2017-11-06 11:27:01 INFO  root:60 - First three most common characters: [о, в, а]
+2017-11-06 11:27:01 INFO  root:62 - Average length of service of the employees: 4.625
+2017-11-06 11:27:01 INFO  root:64 - Maximum length of service among all employees: 8.0
+2017-11-06 11:38:25 INFO  root:58 - Average age of employees: 33.25
+2017-11-06 11:38:25 INFO  root:59 - First three most common characters: [о, в, а]
+2017-11-06 11:38:25 INFO  root:61 - Average length of service of the employees: 4.625
+2017-11-06 11:38:25 INFO  root:63 - Maximum length of service among all employees: 8.0
+2017-11-06 11:41:21 INFO  root:58 - Average age of employees: 33.25
+2017-11-06 11:41:21 INFO  root:59 - First three most common characters: [о, в, а]
+2017-11-06 11:41:21 INFO  root:61 - Average length of service of the employees: 4.625
+2017-11-06 11:41:21 INFO  root:63 - Maximum length of service among all employees: 8.0

@@ -1,5 +1,6 @@
 package main.java.com.musala.generala.service;
 
+import main.java.com.musala.generala.logging.LogClass;
 import main.java.com.musala.generala.models.Employee;
 import main.java.com.musala.generala.exeptions.NoEmployeesException;
 import main.java.com.musala.generala.interfaces.IEmployeeService;
@@ -54,16 +55,16 @@ public class EmployeeService implements IEmployeeService {
             if (this.employeeRepository.getEmployeeList().size() == 0) {
                 throw new NoEmployeesException("There are no employees");
             } else {
-                System.out.println("Average age of employees: " + averageAgeOfEmployees());
-                System.out.println("First three most common characters: "
+                LogClass.LOGGER.info("Average age of employees: " + averageAgeOfEmployees());
+                LogClass.LOGGER.info("First three most common characters: "
                         + mostCommonCharactersInEmployeesNames().toString());
-                System.out.println("Average length of service of the employees: "
+                LogClass.LOGGER.info("Average length of service of the employees: "
                         + averageLengthOfServiceOfEmployees());
-                System.out.println("Maximum length of service among all employees: "
+                LogClass.LOGGER.info("Maximum length of service among all employees: "
                         + maximumLengthOfServiceOfEmployee());
             }
         } catch (IOException e) {
-            System.out.println("Could not find file: " + PATH);
+            LogClass.LOGGER.error("Could not find file: " + PATH);
         } catch (NoEmployeesException e) {
             e.printStackTrace();
         }
