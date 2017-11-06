@@ -1,10 +1,12 @@
 package main.java.com.musala.generala.service;
 
-import main.java.com.musala.generala.logging.LogClass;
-import main.java.com.musala.generala.models.Employee;
 import main.java.com.musala.generala.exeptions.NoEmployeesException;
 import main.java.com.musala.generala.interfaces.IEmployeeService;
+import main.java.com.musala.generala.models.Employee;
 import main.java.com.musala.generala.repositories.EmployeeRepository;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,6 +19,7 @@ public class EmployeeService implements IEmployeeService {
 
     private final static String PATH = "src/main/resources/employee data.txt";
     private EmployeeRepository employeeRepository;
+    private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
@@ -25,6 +28,7 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public void initialize() {
+        PropertyConfigurator.configure("src/main/webapp/lib/log4j.properties");
         try (BufferedReader br = new BufferedReader(new FileReader(PATH))) {
             String currentLine;
             String name = "";
@@ -55,16 +59,16 @@ public class EmployeeService implements IEmployeeService {
             if (this.employeeRepository.getEmployeeList().size() == 0) {
                 throw new NoEmployeesException("There are no employees");
             } else {
-                LogClass.LOGGER.info("Average age of employees: " + averageAgeOfEmployees());
-                LogClass.LOGGER.info("First three most common characters: "
+                LOGGER.info("Average age of employees: " + averageAgeOfEmployees());
+                LOGGER.info("First three most common characters: "
                         + mostCommonCharactersInEmployeesNames().toString());
-                LogClass.LOGGER.info("Average length of service of the employees: "
+                LOGGER.info("Average length of service of the employees: "
                         + averageLengthOfServiceOfEmployees());
-                LogClass.LOGGER.info("Maximum length of service among all employees: "
+                LOGGER.info("Maximum length of service among all employees: "
                         + maximumLengthOfServiceOfEmployee());
             }
         } catch (IOException e) {
-            LogClass.LOGGER.error("Could not find file: " + PATH);
+            LOGGER.error("Could not find file: " + PATH);
         } catch (NoEmployeesException e) {
             e.printStackTrace();
         }

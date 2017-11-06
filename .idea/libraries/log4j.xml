@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="jar://$APPLICATION_HOME_DIR$/lib/log4j.jar!/" />
       <root url="jar://$APPLICATION_HOME_DIR$/lib/log4j-api-2.9.1.jar!/" />
+      <root url="jar://$APPLICATION_HOME_DIR$/lib/juli-6.0.18.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$APPLICATION_HOME_DIR$/lib/log4j-api-2.9.1-javadoc.jar!/" />
