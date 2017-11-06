@@ -4,8 +4,9 @@ import main.java.com.musala.generala.exeptions.NoEmployeesException;
 import main.java.com.musala.generala.interfaces.IEmployeeService;
 import main.java.com.musala.generala.models.Employee;
 import main.java.com.musala.generala.repositories.EmployeeRepository;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class EmployeeService implements IEmployeeService {
 
-    private final static Logger LOGGER = LogManager.getLogger(EmployeeService.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(EmployeeService.class);
     private final static String PATH = "src/main/resources/employee data.txt";
     private EmployeeRepository employeeRepository;
 
@@ -49,10 +50,10 @@ public class EmployeeService implements IEmployeeService {
                         try {
                             Employee employee = new Employee(name, age, lengthOfService);
                             this.employeeRepository.addEmployee(employee);
-                            LOGGER.info(String.format("User %s has been successfully added", name));
+                            LOGGER.info("User {} has been successfully added", name);
                         } catch (IllegalArgumentException e) {
-                            LOGGER.error(String.format
-                                    ("User %s has NOT been successfully added due to invalid input information", name));
+                            LOGGER.error(
+                                    "User {} has NOT been successfully added due to invalid input information", name);
                         }
                     } break;
 
@@ -63,16 +64,16 @@ public class EmployeeService implements IEmployeeService {
             if (this.employeeRepository.getEmployeeList().size() == 0) {
                 throw new NoEmployeesException("There are no employees");
             } else {
-                LOGGER.info(String.format("Average age of employees: %.3f", this.averageAgeOfEmployees()));
-                LOGGER.info(String.format("First three most common characters: %s",
-                        this.mostCommonCharactersInEmployeesNames()));
-                LOGGER.info(String.format("Average length of service of the employees: %.3f",
-                        this.averageLengthOfServiceOfEmployees()));
-                LOGGER.info(String.format("Maximum length of service among all employees: %.3f",
-                        this.maximumLengthOfServiceOfEmployee()));
+                LOGGER.info("Average age of employees: {}", this.averageAgeOfEmployees());
+                LOGGER.info("First three most common characters: {}",
+                        this.mostCommonCharactersInEmployeesNames());
+                LOGGER.info("Average length of service of the employees: {}",
+                        this.averageLengthOfServiceOfEmployees());
+                LOGGER.info("Maximum length of service among all employees: {}",
+                        this.maximumLengthOfServiceOfEmployee());
             }
         } catch (IOException e) {
-            LOGGER.error(String.format("Could not find file: %s", PATH));
+            LOGGER.error("Could not find file: {}", PATH);
         } catch (NoEmployeesException e) {
             e.printStackTrace();
         }
