@@ -50,10 +50,10 @@ public class EmployeeService implements IEmployeeService {
                         try {
                             Employee employee = new Employee(name, age, lengthOfService);
                             this.employeeRepository.addEmployee(employee);
-                            LOGGER.info("User {} has been successfully added", name);
+                            LOGGER.info("User {} has been successfully added!", name);
                         } catch (IllegalArgumentException e) {
                             LOGGER.error(
-                                    "User {} has NOT been successfully added due to invalid input information", name);
+                                    "User {} has NOT been successfully added due to invalid input information!", name);
                         }
                     } break;
 
