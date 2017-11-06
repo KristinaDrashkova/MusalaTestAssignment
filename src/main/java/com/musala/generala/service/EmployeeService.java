@@ -21,6 +21,7 @@ public class EmployeeService implements IEmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
+
     @Override
     public void initialize() {
         try (BufferedReader br = new BufferedReader(new FileReader(PATH))) {
@@ -62,7 +63,7 @@ public class EmployeeService implements IEmployeeService {
                         + maximumLengthOfServiceOfEmployee());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Could not find file: " + PATH);
         } catch (NoEmployeesException e) {
             e.printStackTrace();
         }
