@@ -6,7 +6,6 @@ import main.java.com.musala.generala.models.Employee;
 import main.java.com.musala.generala.repositories.EmployeeRepository;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,9 +16,9 @@ import java.util.stream.Collectors;
 
 public class EmployeeService implements IEmployeeService {
 
+    private final static Logger LOGGER = LogManager.getLogger(EmployeeService.class);
     private final static String PATH = "src/main/resources/employee data.txt";
     private EmployeeRepository employeeRepository;
-    private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
@@ -28,7 +27,6 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public void initialize() {
-        PropertyConfigurator.configure("src/main/webapp/lib/log4j.properties");
         try (BufferedReader br = new BufferedReader(new FileReader(PATH))) {
             String currentLine;
             String name = "";
@@ -48,8 +46,14 @@ public class EmployeeService implements IEmployeeService {
                         break;
                     case "lengthOfService" : {
                         lengthOfService = Double.parseDouble(value.trim());
-                        Employee employee = new Employee(name, age, lengthOfService);
-                        this.employeeRepository.addEmployee(employee);
+                        try {
+                            Employee employee = new Employee(name, age, lengthOfService);
+                            this.employeeRepository.addEmployee(employee);
+                            LOGGER.info(String.format("User %s has been successfully added", name));
+                        } catch (IllegalArgumentException e) {
+                            LOGGER.error(String.format
+                                    ("User %s has NOT been successfully added due to invalid input information", name));
+                        }
                     } break;
 
                 }
@@ -59,16 +63,16 @@ public class EmployeeService implements IEmployeeService {
             if (this.employeeRepository.getEmployeeList().size() == 0) {
                 throw new NoEmployeesException("There are no employees");
             } else {
-                LOGGER.info("Average age of employees: " + averageAgeOfEmployees());
-                LOGGER.info("First three most common characters: "
-                        + mostCommonCharactersInEmployeesNames().toString());
-                LOGGER.info("Average length of service of the employees: "
-                        + averageLengthOfServiceOfEmployees());
-                LOGGER.info("Maximum length of service among all employees: "
-                        + maximumLengthOfServiceOfEmployee());
+                LOGGER.info(String.format("Average age of employees: %.3f", this.averageAgeOfEmployees()));
+                LOGGER.info(String.format("First three most common characters: %s",
+                        this.mostCommonCharactersInEmployeesNames()));
+                LOGGER.info(String.format("Average length of service of the employees: %.3f",
+                        this.averageLengthOfServiceOfEmployees()));
+                LOGGER.info(String.format("Maximum length of service among all employees: %.3f",
+                        this.maximumLengthOfServiceOfEmployee()));
             }
         } catch (IOException e) {
-            LOGGER.error("Could not find file: " + PATH);
+            LOGGER.error(String.format("Could not find file: %s", PATH));
         } catch (NoEmployeesException e) {
             e.printStackTrace();
         }
