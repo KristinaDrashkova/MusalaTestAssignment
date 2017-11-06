@@ -69,6 +69,10 @@ public class EmployeeService implements IEmployeeService {
         }
     }
 
+    /**
+     *
+     * @return employeeSumAges / size
+     */
     @Override
     public double averageAgeOfEmployees() {
         int employeesSumAges = this.employeeRepository.getEmployeeList().stream().mapToInt(Employee::getAge).sum();
@@ -76,6 +80,10 @@ public class EmployeeService implements IEmployeeService {
         return  employeesSumAges / size;
     }
 
+    /**
+     *
+     * @return employeeSumLengthOfService / size
+     */
     @Override
     public double averageLengthOfServiceOfEmployees() {
         double employeeSumLengthOfService = this.employeeRepository.getEmployeeList()
@@ -84,6 +92,10 @@ public class EmployeeService implements IEmployeeService {
         return employeeSumLengthOfService / size;
     }
 
+    /**
+     *
+     * @return employee.getLengthOfService()
+     */
     @Override
     public double maximumLengthOfServiceOfEmployee() {
         Optional<Employee> optionalMaxLengthOfServiceEmployee =
@@ -93,6 +105,10 @@ public class EmployeeService implements IEmployeeService {
         return employee.getLengthOfService();
     }
 
+    /**
+     *
+     * @return mostCommonCharactersList
+     */
     @Override
     public List<Character> mostCommonCharactersInEmployeesNames() {
         List<Character> mostCommonCharactersList = fillEmployeeNamesInToMap().entrySet().stream()
@@ -103,6 +119,10 @@ public class EmployeeService implements IEmployeeService {
         return mostCommonCharactersList;
     }
 
+    /**
+     *
+     * @return charactersInNames
+     */
     @Override
     public HashMap<Character, Integer> fillEmployeeNamesInToMap() {
         HashMap<Character, Integer> charactersInNames = new HashMap<>();

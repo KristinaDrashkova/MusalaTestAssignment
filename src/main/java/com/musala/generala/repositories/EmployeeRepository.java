@@ -11,10 +11,18 @@ public class EmployeeRepository{
         this.employeeList = new ArrayList<>();
     }
 
+    /**
+     *
+     * @return this.employeeList
+     */
     public List<Employee> getEmployeeList() {
         return Collections.unmodifiableList(this.employeeList);
     }
 
+    /**
+     *
+     * @param employee
+     */
     public void addEmployee(Employee employee) {
         this.employeeList.add(employee);
     }

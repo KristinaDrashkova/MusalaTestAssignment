@@ -22,6 +22,10 @@ public class Employee{
         this.name = name;
     }
 
+    /**
+     *
+     * @return this.age
+     */
     public int getAge() {
         return this.age;
     }
@@ -33,6 +37,10 @@ public class Employee{
         this.age = age;
     }
 
+    /**
+     *
+     * @return this.lengthOfService
+     */
     public double getLengthOfService() {
         return this.lengthOfService;
     }
