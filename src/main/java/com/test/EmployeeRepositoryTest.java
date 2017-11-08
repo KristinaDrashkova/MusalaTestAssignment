@@ -28,6 +28,7 @@ public class EmployeeRepositoryTest {
         this.employeeRepository.getEmployeeList().add(this.mockedEmployeeOne);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void addEmployeeListShouldAddEmployeeInList() throws NoSuchFieldException, IllegalAccessException {
         this.employeeRepository.addEmployee(this.mockedEmployeeOne);
