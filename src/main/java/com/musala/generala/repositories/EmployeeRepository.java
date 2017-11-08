@@ -1,6 +1,6 @@
-package main.java.com.musala.generala.repositories;
+package com.musala.generala.repositories;
 
-import main.java.com.musala.generala.models.Employee;
+import com.musala.generala.models.Employee;
 
 import java.util.*;
 
@@ -12,6 +12,9 @@ public class EmployeeRepository{
     }
 
     /**
+     *  Returns List of Employee that is unmodifiable
+     *
+     * @see com.musala.generala.models.Employee
      *
      * @return unmodifiable list of Employee
      */
@@ -21,7 +24,7 @@ public class EmployeeRepository{
 
     /**
      *
-     * @param employee
+     * @param employee to be added to the list
      */
     public void addEmployee(Employee employee) {
         this.employeeList.add(employee);

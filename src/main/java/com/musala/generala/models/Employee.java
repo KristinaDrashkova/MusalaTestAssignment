@@ -1,4 +1,8 @@
-package main.java.com.musala.generala.models;
+package com.musala.generala.models;
+
+/**
+ * Class Employee with name(String), age(int), lengthOfService(double)
+ */
 
 public class Employee{
     private String name;
@@ -23,8 +27,9 @@ public class Employee{
     }
 
     /**
+     *  Returns age of Employee.class
      *
-     * @return this.age
+     * @return age of Employee
      */
     public int getAge() {
         return this.age;
@@ -38,8 +43,9 @@ public class Employee{
     }
 
     /**
+     *  Returns length of service of Employee
      *
-     * @return this.lengthOfService
+     * @return length of service of Employee
      */
     public double getLengthOfService() {
         return this.lengthOfService;

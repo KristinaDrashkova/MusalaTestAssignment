@@ -1,10 +1,13 @@
-package main.java.com.musala.generala.interfaces;
+package com.musala.generala.interfaces;
 
 import java.util.HashMap;
 import java.util.List;
 
 public interface IEmployeeService {
-    void initialize();
+
+    void parse(String path);
+
+    void log();
 
     double averageAgeOfEmployees();
 

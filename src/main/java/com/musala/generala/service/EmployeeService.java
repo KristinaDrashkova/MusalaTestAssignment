@@ -1,12 +1,11 @@
-package main.java.com.musala.generala.service;
+package com.musala.generala.service;
 
-import main.java.com.musala.generala.exeptions.NoEmployeesException;
-import main.java.com.musala.generala.interfaces.IEmployeeService;
-import main.java.com.musala.generala.models.Employee;
-import main.java.com.musala.generala.repositories.EmployeeRepository;
+import com.musala.generala.exeptions.NoEmployeesException;
+import com.musala.generala.interfaces.IEmployeeService;
+import com.musala.generala.models.Employee;
+import com.musala.generala.repositories.EmployeeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -18,7 +17,6 @@ import java.util.stream.Collectors;
 public class EmployeeService implements IEmployeeService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(EmployeeService.class);
-    private final static String PATH = "src/main/resources/employee data.txt";
     private EmployeeRepository employeeRepository;
 
     public EmployeeService(EmployeeRepository employeeRepository) {
@@ -27,8 +25,8 @@ public class EmployeeService implements IEmployeeService {
 
 
     @Override
-    public void initialize() {
-        try (BufferedReader br = new BufferedReader(new FileReader(PATH))) {
+    public void parse(String path) {
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String currentLine;
             String name = "";
             int age = 0;
@@ -61,38 +59,51 @@ public class EmployeeService implements IEmployeeService {
 
             }
 
-            if (this.employeeRepository.getEmployeeList().size() == 0) {
-                throw new NoEmployeesException("There are no employees");
-            } else {
-                LOGGER.info("Average age of employees: {}", this.averageAgeOfEmployees());
-                LOGGER.info("First three most common characters: {}",
-                        this.mostCommonCharactersInEmployeesNames());
-                LOGGER.info("Average length of service of the employees: {}",
-                        this.averageLengthOfServiceOfEmployees());
-                LOGGER.info("Maximum length of service among all employees: {}",
-                        this.maximumLengthOfServiceOfEmployee());
-            }
         } catch (IOException e) {
-            LOGGER.error("Could not find file: {}", PATH);
-        } catch (NoEmployeesException e) {
-            e.printStackTrace();
+            LOGGER.error("Could not find file: {}", path);
+        }
+    }
+
+    public void log() {
+        if (this.employeeRepository.getEmployeeList().size() == 0) {
+            try {
+                throw new NoEmployeesException("There are no employees");
+            } catch (NoEmployeesException e) {
+                e.printStackTrace();
+            }
+        } else {
+            LOGGER.info("Average age of employees: {}", this.averageAgeOfEmployees());
+            LOGGER.info("First three most common characters: {}",
+                    this.mostCommonCharactersInEmployeesNames());
+            LOGGER.info("Average length of service of the employees: {}",
+                    this.averageLengthOfServiceOfEmployees());
+            LOGGER.info("Maximum length of service among all employees: {}",
+                    this.maximumLengthOfServiceOfEmployee());
         }
     }
 
     /**
+     * Returns the calculated average age
+     * from all the Employee in the EmployeeRepository
      *
-     * @return employeeSumAges / size
+     * @see com.musala.generala.models.Employee
+     *
+     * @return calculated average age
      */
     @Override
     public double averageAgeOfEmployees() {
-        int employeesSumAges = this.employeeRepository.getEmployeeList().stream().mapToInt(Employee::getAge).sum();
+        long employeesSumAges = this.employeeRepository.getEmployeeList().stream().mapToLong(Employee::getAge).sum();
         double size = this.employeeRepository.getEmployeeList().size() * 1.00;
         return  employeesSumAges / size;
     }
 
     /**
+     * Returns calculated average length of service
+     * from all the Employee in the EmployeeRepository
      *
-     * @return employeeSumLengthOfService / size
+     * @see com.musala.generala.models.Employee
+     *
+     * @return calculated average length of service
      */
     @Override
     public double averageLengthOfServiceOfEmployees() {
@@ -103,8 +114,12 @@ public class EmployeeService implements IEmployeeService {
     }
 
     /**
+     * Returns the maximum length of service
+     * from all the Employee in the EmployeeRepository
      *
-     * @return employee.getLengthOfService()
+     * @see com.musala.generala.models.Employee
+     *
+     * @return the maximum length of service
      */
     @Override
     public double maximumLengthOfServiceOfEmployee() {
@@ -116,8 +131,13 @@ public class EmployeeService implements IEmployeeService {
     }
 
     /**
+     * Returns list of the first three most common characters
+     * from all the names of all the Employee in the EmployeeRepository
      *
-     * @return mostCommonCharactersList
+     * @see com.musala.generala.models.Employee
+     *
+     * @return list of the first three most common characters
+     * from all the names
      */
     @Override
     public List<Character> mostCommonCharactersInEmployeesNames() {
@@ -130,14 +150,20 @@ public class EmployeeService implements IEmployeeService {
     }
 
     /**
+     * Returns HashMap from all the characters
+     * in the names of the all Employee in the EmployeeRepository
+     * with the number of their occurrences as a value
      *
-     * @return charactersInNames
+     * @see com.musala.generala.models.Employee
+     *
+     * @return HasMap with character for a key and its occurrence
+     * in all the names of all the Employee in the EmployeeRepository as a value
      */
     @Override
     public HashMap<Character, Integer> fillEmployeeNamesInToMap() {
         HashMap<Character, Integer> charactersInNames = new HashMap<>();
         for (Employee employee : this.employeeRepository.getEmployeeList()) {
-            for (char c : employee.getName().toCharArray()) {
+            for (char c : employee.getName().toLowerCase().toCharArray()) {
                 if (!charactersInNames.containsKey(c)) {
                     charactersInNames.put(c, 0);
                 }
