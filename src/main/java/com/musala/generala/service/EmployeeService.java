@@ -14,6 +14,10 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Class that does most of the business logic in the project
+ * for more information check the methods documentation
+ */
 public class EmployeeService implements IEmployeeService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(EmployeeService.class);
@@ -24,6 +28,11 @@ public class EmployeeService implements IEmployeeService {
     }
 
 
+    /**
+     * Reads data from file and parses it to the project repository
+     *
+     * @param path to the file from which the data is parsed
+     */
     @Override
     public void parse(String path) {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
@@ -63,6 +72,7 @@ public class EmployeeService implements IEmployeeService {
             LOGGER.error("Could not find file: {}", path);
         }
     }
+
 
     public void log() {
         if (this.employeeRepository.getEmployeeList().size() == 0) {

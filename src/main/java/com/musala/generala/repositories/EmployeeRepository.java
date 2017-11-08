@@ -4,6 +4,12 @@ import com.musala.generala.models.Employee;
 
 import java.util.*;
 
+/**
+ * The class that holds record of all Employee
+ * and gives access to add Employee
+ * and retrieves all Employee as list
+ */
+
 public class EmployeeRepository{
     private List<Employee> employeeList;
 
