@@ -15,6 +15,6 @@ public class Main {
         EmployeeRepository employeeRepository = new EmployeeRepository();
         IEmployeeService employeeService = new EmployeeService(employeeRepository);
         employeeService.parse(PATH);
-        employeeService.log();
+        employeeService.getEmployeeInfo();
     }
 }

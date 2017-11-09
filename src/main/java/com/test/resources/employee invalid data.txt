@@ -1,0 +1,16 @@
+
+name=
+age=1
+lengthOfService=3
+<<>>
+name=Станислав Иванов Желязков
+age=45
+lengthOfService=-2
+<<>>
+name=Петър Василев Кожухаров
+age=-1
+lengthOfService=2
+<<>>
+name=Асен Петров Костадинов
+age=35
+lengthOfService=5.5

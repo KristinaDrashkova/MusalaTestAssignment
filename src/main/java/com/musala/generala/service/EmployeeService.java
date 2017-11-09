@@ -42,9 +42,9 @@ public class EmployeeService implements IEmployeeService {
             double lengthOfService = 0;
             while ((currentLine = br.readLine()) != null) {
                 String[] lineData = currentLine.split(Pattern.quote("="));
-                if (lineData.length == 1 || currentLine.trim().equals("<<>>")) {continue;}
+                if (currentLine.trim().equals("<<>>")) {continue;}
                 String key = lineData[0];
-                String value = lineData[1];
+                String value = lineData.length == 1? "" : lineData[1];
                 switch (key) {
                     case "name" :
                         name = value.trim();
@@ -57,24 +57,21 @@ public class EmployeeService implements IEmployeeService {
                         try {
                             Employee employee = new Employee(name, age, lengthOfService);
                             this.employeeRepository.addEmployee(employee);
-                            LOGGER.info("User {} has been successfully added", name);
+                            log("info", "User {} has been successfully added", name);
                         } catch (IllegalArgumentException e) {
-                            LOGGER.error(
-                                    "User {} has NOT been successfully added due to invalid input information", name);
+                            log("error", "User {} has NOT been successfully " +
+                                    "added due to invalid input information", name);
                         }
                     } break;
-
                 }
-
             }
-
         } catch (IOException e) {
-            LOGGER.error("Could not find file: {}", path);
+            log("error", "Could not find file: {}", path);
         }
     }
 
-
-    public void log() {
+    @Override
+    public void getEmployeeInfo() {
         if (this.employeeRepository.getEmployeeList().size() == 0) {
             try {
                 throw new NoEmployeesException("There are no employees");
@@ -82,13 +79,21 @@ public class EmployeeService implements IEmployeeService {
                 e.printStackTrace();
             }
         } else {
-            LOGGER.info("Average age of employees: {}", this.averageAgeOfEmployees());
-            LOGGER.info("First three most common characters: {}",
-                    this.mostCommonCharactersInEmployeesNames());
-            LOGGER.info("Average length of service of the employees: {}",
-                    this.averageLengthOfServiceOfEmployees());
-            LOGGER.info("Maximum length of service among all employees: {}",
-                    this.maximumLengthOfServiceOfEmployee());
+            log("info", "Average age of employees: {}", this.averageAgeOfEmployees() + "");
+            log("info", "First three most common characters: {}"
+                    , this.mostCommonCharactersInEmployeesNames().toString());
+            log("info", "Average length of service of the employees: {}"
+                    , this.averageLengthOfServiceOfEmployees() + "");
+            log("info", "Maximum length of service among all employees: {}"
+                    , this.maximumLengthOfServiceOfEmployee() + "");
+        }
+    }
+
+    @Override
+    public void log(String status, String message, String parameters) {
+        switch (status) {
+            case "info" : LOGGER.info(message, parameters); break;
+            case "error" : LOGGER.error(message, parameters); break;
         }
     }
 

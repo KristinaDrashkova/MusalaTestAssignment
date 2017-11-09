@@ -7,7 +7,9 @@ public interface IEmployeeService {
 
     void parse(String path);
 
-    void log();
+    void getEmployeeInfo();
+
+    void log(String status, String message, String parameters);
 
     double averageAgeOfEmployees();
 
