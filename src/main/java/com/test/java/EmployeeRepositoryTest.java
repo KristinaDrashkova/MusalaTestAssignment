@@ -1,5 +1,3 @@
-package com.test;
-
 import com.musala.generala.models.Employee;
 import com.musala.generala.repositories.EmployeeRepository;
 import org.junit.Assert;
