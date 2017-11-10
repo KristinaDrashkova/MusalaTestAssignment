@@ -1,3 +1,5 @@
+package com.test.java;
+
 import com.musala.generala.Main;
 import org.junit.jupiter.api.Test;
 

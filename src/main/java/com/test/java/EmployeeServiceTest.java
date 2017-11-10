@@ -1,3 +1,5 @@
+package com.test.java;
+
 import com.musala.generala.models.Employee;
 import com.musala.generala.repositories.EmployeeRepository;
 import com.musala.generala.service.EmployeeService;
@@ -13,28 +15,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import static com.musala.generala.constants.Constants.*;
 
 public class EmployeeServiceTest {
-
-    private static final String ILLEGAL_EMPLOYEE_NAME_MESSAGE = "Illegal employee name:";
-    private static final String ILLEGAL_EMPLOYEE_LENGTH_OF_SERVICE_MESSAGE = "Illegal employee length of service: -2.0";
-    private static final String ILLEGAL_EMPLOYEE_AGE_MESSAGE = "Illegal employee age: -1";
-    private static final String TEST_LOG_PATH = "c://Log/test log.log";
-    private static final String COULD_NOT_FIND_FILE_MESSAGE = "Could not find file: ";
-    private static final double DELTA = 1e-15;
-    private static final String EMPLOYEE_INVALID_DATA_PATH =
-            "src/main/java/com/test/resources/employee invalid data.txt";
-    private static final String INVALID_PATH = "src/resources/employee invalid data.txt";
-    private static final String CONFIG_FILENAME_PATH = "src/main/java/com/test/WEB-INF/lib/log4j.properties";
-    private static final String TEST_NAME_ONE = "Aaaaaaf";
-    private static final String TEST_NAME_TWO = "Aaaaaaf Bbbbbf";
-    private static final String TEST_NAME_THREE = "Aaaaaaf Bbbbbf Cccccf";
-    private static final int TEST_AGE_ONE = 10;
-    private static final int TEST_AGE_TWO = 20;
-    private static final int TEST_AGE_THREE = 30;
-    private static final double TEST_LENGTH_OF_SERVICE_ONE = 10.1;
-    private static final double TEST_LENGTH_OF_SERVICE_TWO = 20.2;
-    private static final double TEST_LENGTH_OF_SERVICE_THREE = 30.3;
     private Employee employeeOne;
     private Employee employeeTwo;
     private Employee employeeThree;
@@ -63,7 +46,7 @@ public class EmployeeServiceTest {
     public void parseShouldLogErrorMessageWithWrongInputFilePath() {
         this.employeeService.parse(INVALID_PATH);
         List<String> loggedMessages = getLoggedMessages();
-        String expectedMessage = COULD_NOT_FIND_FILE_MESSAGE + INVALID_PATH;
+        String expectedMessage = COULD_NOT_FIND_FILE_EXPECTED_MESSAGE + INVALID_PATH;
         Assert.assertTrue(loggedMessages.contains(expectedMessage));
     }
 
@@ -76,74 +59,87 @@ public class EmployeeServiceTest {
         }
     }
 
+
+    @Test
+    public void getEmployeeInfoShouldLogValidInformation() {
+        mockRepositoryWithNormalData();
+        this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
+        this.employeeService.getEmployeeInfo();
+        List<String> loggedMessages = getLoggedMessages();
+        for (String message : getExpectedLoggedMessages()) {
+            Assert.assertTrue(loggedMessages.contains(message));
+        }
+    }
+
     @Test
     public void averageAgeOfEmployeesShouldCalculateCorrectWithNormalInputData(){
         mockRepositoryWithNormalData();
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(20.0, employeeService.averageAgeOfEmployees(),DELTA);
+        Assert.assertEquals(TEST_AGE_TWO, this.employeeService.averageAgeOfEmployees(),DELTA);
     }
 
     @Test
     public void averageAgeOfEmployeeShouldCalculateCorrectWithCornerCaseMaxValue() {
         mockRepositoryWithCornerCaseMaxData();
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(Integer.MAX_VALUE, employeeService.averageAgeOfEmployees(),DELTA);
+        Assert.assertEquals(Integer.MAX_VALUE, this.employeeService.averageAgeOfEmployees(),DELTA);
     }
 
     @Test
     public void averageAgeOfEmployeeShouldCalculateCorrectWithCornerCaseMinValue() {
         mockRepositoryWithCornerCaseMinData();
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(Integer.MIN_VALUE, employeeService.averageAgeOfEmployees(),DELTA);
+        Assert.assertEquals(Integer.MIN_VALUE, this.employeeService.averageAgeOfEmployees(),DELTA);
     }
 
     @Test
     public void averageLengthOfServiceOfEmployeesShouldCalculateCorrect() {
         mockRepositoryWithNormalData();
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(20.2, employeeService.averageLengthOfServiceOfEmployees(),DELTA);
+        Assert.assertEquals(TEST_LENGTH_OF_SERVICE_TWO, this.employeeService.averageLengthOfServiceOfEmployees(),DELTA);
     }
 
     @Test
     public void averageLengthOfServiceOfEmployeesShouldOverflowWithCornerMaxValues() {
         mockRepositoryWithCornerCaseMaxData();
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(Double.POSITIVE_INFINITY, employeeService.averageLengthOfServiceOfEmployees(),DELTA);
+        Assert.assertEquals(Double.POSITIVE_INFINITY, this.employeeService.averageLengthOfServiceOfEmployees(),DELTA);
     }
 
     @Test
     public void averageLengthOfServiceOfEmployeesShouldWorkCorrectWithCornerMinValues() {
         mockRepositoryWithCornerCaseMinData();
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(Double.MIN_VALUE, employeeService.averageLengthOfServiceOfEmployees(),DELTA);
+        Assert.assertEquals(Double.MIN_VALUE, this.employeeService.averageLengthOfServiceOfEmployees(),DELTA);
     }
 
     @Test
     public void maximumLengthOfServiceOfEmployeeShouldWorkCorrect(){
         mockRepositoryWithNormalData();
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(30.3, employeeService.maximumLengthOfServiceOfEmployee(), DELTA);
+        Assert.assertEquals(TEST_LENGTH_OF_SERVICE_THREE, this.employeeService.maximumLengthOfServiceOfEmployee(), DELTA);
     }
 
     @Test
     public void maximumLengthOfServiceOfEmployeeShouldWorkCorrectWithCornerMaxValues(){
         mockRepositoryWithCornerCaseMaxData();
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(Double.MAX_VALUE, employeeService.maximumLengthOfServiceOfEmployee(), DELTA);
+        Assert.assertEquals(Double.MAX_VALUE, this.employeeService.maximumLengthOfServiceOfEmployee(), DELTA);
     }
 
     @Test
     public void maximumLengthOfServiceOfEmployeeShouldWorkCorrectWithCornerMinValues(){
         mockRepositoryWithMixedData();
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(30.3, employeeService.maximumLengthOfServiceOfEmployee(), DELTA);
+        Assert.assertEquals(TEST_LENGTH_OF_SERVICE_THREE, this.employeeService.maximumLengthOfServiceOfEmployee(), DELTA);
     }
 
     @Test
     public void mostCommonCharactersInEmployeesNamesShouldWorkCorrect() {
         mockRepositoryWithNormalData();
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals("[a, b, f]", employeeService.mostCommonCharactersInEmployeesNames().toString());
+        Assert.assertEquals(EXPECTED_COMMON_CHARACTERS_TO_STRING
+                , employeeService.mostCommonCharactersInEmployeesNames().toString());
     }
 
     @Test
@@ -158,7 +154,7 @@ public class EmployeeServiceTest {
             }
         }
 
-        Assert.assertEquals(employeeService.fillEmployeeNamesInToMap(), map);
+        Assert.assertEquals(this.employeeService.fillEmployeeNamesInToMap(), map);
     }
 
 
@@ -184,11 +180,8 @@ public class EmployeeServiceTest {
 
 
     private List<String> expectedLoggedErrors() {
-        List<String> loggedMessages = new ArrayList<>();
-        loggedMessages.add(ILLEGAL_EMPLOYEE_NAME_MESSAGE);
-        loggedMessages.add(ILLEGAL_EMPLOYEE_LENGTH_OF_SERVICE_MESSAGE);
-        loggedMessages.add(ILLEGAL_EMPLOYEE_AGE_MESSAGE);
-
+        List<String> loggedMessages = Arrays.asList(ILLEGAL_EMPLOYEE_NAME_EXPECTED_MESSAGE
+                , ILLEGAL_EMPLOYEE_LENGTH_OF_SERVICE_EXPECTED_MESSAGE, ILLEGAL_EMPLOYEE_AGE_EXPECTED_MESSAGE);
         return loggedMessages;
     }
 
@@ -206,6 +199,25 @@ public class EmployeeServiceTest {
         }
         return loggedMessages;
     }
+
+    private List<String> getExpectedLoggedMessages() {
+        List<String> loggedMessages = new ArrayList<>();
+        loggedMessages.add(AVERAGE_AGE_OF_EMPLOYEES_MESSAGE
+                .substring(0, AVERAGE_AGE_OF_EMPLOYEES_MESSAGE.length() - 2) +
+                this.employeeService.averageAgeOfEmployees());
+        loggedMessages.add(FIRST_THREE_MOST_COMMON_CHARACTERS_MESSAGE
+                .substring(0, FIRST_THREE_MOST_COMMON_CHARACTERS_MESSAGE.length() - 2)
+                + this.employeeService.mostCommonCharactersInEmployeesNames().toString());
+        loggedMessages.add(AVERAGE_LENGTH_OF_SERVICE_OF_THE_EMPLOYEES_MESSAGE
+                .substring(0, AVERAGE_LENGTH_OF_SERVICE_OF_THE_EMPLOYEES_MESSAGE.length() - 2)
+                + this.employeeService.averageLengthOfServiceOfEmployees());
+        loggedMessages.add(MAXIMUM_LENGTH_OF_SERVICE_AMONG_ALL_EMPLOYEES_MESSAGE
+                .substring(0, MAXIMUM_LENGTH_OF_SERVICE_AMONG_ALL_EMPLOYEES_MESSAGE.length() - 2)
+                + this.employeeService.maximumLengthOfServiceOfEmployee());
+
+        return loggedMessages;
+    }
+
 
     @After
     public void clearLog() throws IOException {

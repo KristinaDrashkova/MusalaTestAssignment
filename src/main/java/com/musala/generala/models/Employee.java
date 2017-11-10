@@ -2,12 +2,14 @@ package com.musala.generala.models;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static com.musala.generala.constants.Constants.*;
 
 /**
  * Class Employee with name(String), age(int), lengthOfService(double)
  */
 
 public class Employee{
+
     private String name;
     private int age;
     private double lengthOfService;
@@ -25,7 +27,7 @@ public class Employee{
 
     private void setName(String name) {
         if (name.isEmpty()) {
-            LOGGER.error("Illegal employee name: {}", name);
+            LOGGER.error(ILLEGAL_EMPLOYEE_NAME_MESSAGE, name);
             throw new IllegalArgumentException();
         }
         this.name = name;
@@ -42,7 +44,7 @@ public class Employee{
 
     private void setAge(int age) {
         if (age <= 0) {
-            LOGGER.error("Illegal employee age: {}", age);
+            LOGGER.error(ILLEGAL_EMPLOYEE_AGE_MESSAGE, age);
             throw new IllegalArgumentException();
         }
         this.age = age;
@@ -59,7 +61,7 @@ public class Employee{
 
     private void setLengthOfService(double lengthOfService) {
         if (lengthOfService <= 0.0) {
-            LOGGER.error("Illegal employee length of service: {}", lengthOfService);
+            LOGGER.error(ILLEGAL_EMPLOYEE_LENGTH_OF_SERVICE_MESSAGE, lengthOfService);
             throw new IllegalArgumentException();
         }
         this.lengthOfService = lengthOfService;
