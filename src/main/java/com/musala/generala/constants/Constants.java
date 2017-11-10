@@ -10,7 +10,7 @@ public class Constants {
     public static final String EMPLOYEE_INVALID_DATA_PATH =
       "src/main/java/com/test/resources/employee invalid data.txt";
     public static final String INVALID_PATH = "src/resources/employee invalid data.txt";
-    public static final String CONFIG_FILENAME_PATH = "src/main/java/com/test/WEB-INF/lib/log4j.properties";
+    public static final String TEST_CONFIG_FILENAME_PATH = "src/main/java/com/test/WEB-INF/lib/log4j.properties";
     public static final String TEST_NAME_ONE = "Aaaaaaf";
     public static final String TEST_NAME_TWO = "Aaaaaaf Bbbbbf";
     public static final String TEST_NAME_THREE = "Aaaaaaf Bbbbbf Cccccf";
@@ -33,4 +33,6 @@ public class Constants {
             "added due to invalid input information";
     public static final String COULD_NOT_FIND_FILE_MESSAGE = "Could not find file: {}";
     public static final String NO_EMPLOYEES_MESSAGE = "There are no employees";
+    public final static String RESOURCES_EMPLOYEE_DATA_PATH = "src/main/resources/employee data.txt";
+    public static final String CONFIG_FILENAME_PATH = "src/main/webapp/WEB-INF/lib/log4j.properties";
 }

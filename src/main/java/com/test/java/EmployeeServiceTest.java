@@ -28,7 +28,7 @@ public class EmployeeServiceTest {
 
     @Before
     public void initialize() {
-        PropertyConfigurator.configure(CONFIG_FILENAME_PATH);
+        PropertyConfigurator.configure(TEST_CONFIG_FILENAME_PATH);
         this.employeeOne = new Employee(TEST_NAME_ONE, TEST_AGE_ONE, TEST_LENGTH_OF_SERVICE_ONE);
         this.employeeTwo = new Employee(TEST_NAME_TWO, TEST_AGE_TWO, TEST_LENGTH_OF_SERVICE_TWO);
         this.employeeThree = new Employee(TEST_NAME_THREE, TEST_AGE_THREE, TEST_LENGTH_OF_SERVICE_THREE);
