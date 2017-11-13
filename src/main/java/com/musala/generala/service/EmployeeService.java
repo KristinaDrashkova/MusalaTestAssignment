@@ -4,7 +4,6 @@ import com.musala.generala.exeptions.NoEmployeesException;
 import com.musala.generala.interfaces.IEmployeeService;
 import com.musala.generala.models.Employee;
 import com.musala.generala.repositories.EmployeeRepository;
-import static com.musala.generala.constants.Constants.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,15 +57,15 @@ public class EmployeeService implements IEmployeeService {
                         try {
                             Employee employee = new Employee(name, age, lengthOfService);
                             this.employeeRepository.addEmployee(employee);
-                            log("info", USER_HAS_BEEN_SUCCESSFULLY_ADDED_MESSAGE, name);
+                            log("info", "User {} has been successfully added", name);
                         } catch (IllegalArgumentException e) {
-                            log("error", USER_HAS_NOT_BEEN_SUCCESSFULLY_ADDED_MESSAGE, name);
+                            log("error", "User {} has NOT been successfully added due to invalid input information", name);
                         }
                     } break;
                 }
             }
         } catch (IOException e) {
-            log("error", COULD_NOT_FIND_FILE_MESSAGE, path);
+            log("error", "Could not find file: {}", path);
         }
     }
 
@@ -74,17 +73,17 @@ public class EmployeeService implements IEmployeeService {
     public void getEmployeeInfo() {
         if (this.employeeRepository.getEmployeeList().size() == 0) {
             try {
-                throw new NoEmployeesException(NO_EMPLOYEES_MESSAGE);
+                throw new NoEmployeesException("There are no employees");
             } catch (NoEmployeesException e) {
                 e.printStackTrace();
             }
         } else {
-            log("info", AVERAGE_AGE_OF_EMPLOYEES_MESSAGE, this.averageAgeOfEmployees() + "");
-            log("info", FIRST_THREE_MOST_COMMON_CHARACTERS_MESSAGE
+            log("info", "Average age of employees: {}", this.averageAgeOfEmployees() + "");
+            log("info", "First three most common characters: {}"
                     , this.mostCommonCharactersInEmployeesNames().toString());
-            log("info", AVERAGE_LENGTH_OF_SERVICE_OF_THE_EMPLOYEES_MESSAGE
+            log("info", "Average length of service of the employees: {}"
                     , this.averageLengthOfServiceOfEmployees() + "");
-            log("info", MAXIMUM_LENGTH_OF_SERVICE_AMONG_ALL_EMPLOYEES_MESSAGE
+            log("info", "Maximum length of service among all employees: {}"
                     , this.maximumLengthOfServiceOfEmployee() + "");
         }
     }

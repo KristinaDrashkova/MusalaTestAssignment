@@ -15,29 +15,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import static com.musala.generala.constants.Constants.*;
 
 public class EmployeeServiceTest {
-    private Employee employeeOne;
-    private Employee employeeTwo;
-    private Employee employeeThree;
-    private Employee mockedEmployeeOne;
-    private Employee mockedEmployeeTwo;
+    private static final String TEST_LOG_PATH = "c://Log/test log.log";
+    private static final String EMPLOYEE_INVALID_DATA_PATH =
+            "src/main/java/com/test/resources/employee invalid data.txt";
+    private static final String INVALID_PATH = "src/resources/employee invalid data.txt";
+    private static final String TEST_CONFIG_FILENAME_PATH = "src/main/java/com/test/WEB-INF/lib/log4j.properties";
+    private static final double DELTA = 1e-15;
     private EmployeeRepository mockedEmployeeRepository;
     private EmployeeService employeeService;
+    private Employee norman;
+    private Employee nora;
+    private Employee norbert;
+    private Employee maximilian;
 
     @Before
     public void initialize() {
         PropertyConfigurator.configure(TEST_CONFIG_FILENAME_PATH);
-        this.employeeOne = new Employee(TEST_NAME_ONE, TEST_AGE_ONE, TEST_LENGTH_OF_SERVICE_ONE);
-        this.employeeTwo = new Employee(TEST_NAME_TWO, TEST_AGE_TWO, TEST_LENGTH_OF_SERVICE_TWO);
-        this.employeeThree = new Employee(TEST_NAME_THREE, TEST_AGE_THREE, TEST_LENGTH_OF_SERVICE_THREE);
-        this.mockedEmployeeOne = Mockito.mock(Employee.class);
-        Mockito.when(this.mockedEmployeeOne.getAge()).thenReturn(Integer.MAX_VALUE);
-        Mockito.when(this.mockedEmployeeOne.getLengthOfService()).thenReturn(Double.MAX_VALUE);
-        this.mockedEmployeeTwo = Mockito.mock(Employee.class);
-        Mockito.when(this.mockedEmployeeTwo.getAge()).thenReturn(Integer.MIN_VALUE);
-        Mockito.when(this.mockedEmployeeTwo.getLengthOfService()).thenReturn(Double.MIN_VALUE);
+        // nora, norman and norbert are employees with normal parameters
+        this.norman = new Employee("Aaaaaaf", 10, 10.1);
+        this.nora = new Employee("Aaaaaaf Bbbbbf", 20, 20.2);
+        this.norbert = new Employee("Aaaaaaf Bbbbbf Cccccf", 30, 30.3);
+        //maximilian is an employee with MAX value for age and length of service
+        this.maximilian = new Employee("A B C", Integer.MAX_VALUE, Double.MAX_VALUE);
         this.mockedEmployeeRepository = Mockito.mock(EmployeeRepository.class);
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
     }
@@ -46,7 +47,7 @@ public class EmployeeServiceTest {
     public void parseShouldLogErrorMessageWithWrongInputFilePath() {
         this.employeeService.parse(INVALID_PATH);
         List<String> loggedMessages = getLoggedMessages();
-        String expectedMessage = COULD_NOT_FIND_FILE_EXPECTED_MESSAGE + INVALID_PATH;
+        String expectedMessage = "Could not find file: " + INVALID_PATH;
         Assert.assertTrue(loggedMessages.contains(expectedMessage));
     }
 
@@ -62,7 +63,8 @@ public class EmployeeServiceTest {
 
     @Test
     public void getEmployeeInfoShouldLogValidInformation() {
-        mockRepositoryWithNormalData();
+        Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
+                .thenReturn(Arrays.asList(this.nora, this.norman, this.norbert));
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
         this.employeeService.getEmployeeInfo();
         List<String> loggedMessages = getLoggedMessages();
@@ -73,78 +75,68 @@ public class EmployeeServiceTest {
 
     @Test
     public void averageAgeOfEmployeesShouldCalculateCorrectWithNormalInputData(){
-        mockRepositoryWithNormalData();
+        Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
+                .thenReturn(Arrays.asList(this.nora, this.norman, this.norbert));
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(TEST_AGE_TWO, this.employeeService.averageAgeOfEmployees(),DELTA);
+        Assert.assertEquals(20, this.employeeService.averageAgeOfEmployees(),DELTA);
     }
 
     @Test
     public void averageAgeOfEmployeeShouldCalculateCorrectWithCornerCaseMaxValue() {
-        mockRepositoryWithCornerCaseMaxData();
+        Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
+                .thenReturn(Arrays.asList(this.maximilian, this.maximilian, this.maximilian));
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
         Assert.assertEquals(Integer.MAX_VALUE, this.employeeService.averageAgeOfEmployees(),DELTA);
     }
 
-    @Test
-    public void averageAgeOfEmployeeShouldCalculateCorrectWithCornerCaseMinValue() {
-        mockRepositoryWithCornerCaseMinData();
-        this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(Integer.MIN_VALUE, this.employeeService.averageAgeOfEmployees(),DELTA);
-    }
 
     @Test
     public void averageLengthOfServiceOfEmployeesShouldCalculateCorrect() {
-        mockRepositoryWithNormalData();
+        Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
+                .thenReturn(Arrays.asList(this.nora, this.norman, this.norbert));
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(TEST_LENGTH_OF_SERVICE_TWO, this.employeeService.averageLengthOfServiceOfEmployees(),DELTA);
+        Assert.assertEquals(20.2, this.employeeService.averageLengthOfServiceOfEmployees(),DELTA);
     }
 
     @Test
     public void averageLengthOfServiceOfEmployeesShouldOverflowWithCornerMaxValues() {
-        mockRepositoryWithCornerCaseMaxData();
+        Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
+                .thenReturn(Arrays.asList(this.maximilian, this.maximilian, this.maximilian));
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
         Assert.assertEquals(Double.POSITIVE_INFINITY, this.employeeService.averageLengthOfServiceOfEmployees(),DELTA);
     }
 
-    @Test
-    public void averageLengthOfServiceOfEmployeesShouldWorkCorrectWithCornerMinValues() {
-        mockRepositoryWithCornerCaseMinData();
-        this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(Double.MIN_VALUE, this.employeeService.averageLengthOfServiceOfEmployees(),DELTA);
-    }
 
     @Test
     public void maximumLengthOfServiceOfEmployeeShouldWorkCorrect(){
-        mockRepositoryWithNormalData();
+        Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
+                .thenReturn(Arrays.asList(this.nora, this.norman, this.norbert));
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(TEST_LENGTH_OF_SERVICE_THREE, this.employeeService.maximumLengthOfServiceOfEmployee(), DELTA);
+        Assert.assertEquals(30.3, this.employeeService.maximumLengthOfServiceOfEmployee(), DELTA);
     }
 
     @Test
     public void maximumLengthOfServiceOfEmployeeShouldWorkCorrectWithCornerMaxValues(){
-        mockRepositoryWithCornerCaseMaxData();
+        Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
+                .thenReturn(Arrays.asList(this.maximilian, this.maximilian, this.maximilian));
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
         Assert.assertEquals(Double.MAX_VALUE, this.employeeService.maximumLengthOfServiceOfEmployee(), DELTA);
     }
 
-    @Test
-    public void maximumLengthOfServiceOfEmployeeShouldWorkCorrectWithCornerMinValues(){
-        mockRepositoryWithMixedData();
-        this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(TEST_LENGTH_OF_SERVICE_THREE, this.employeeService.maximumLengthOfServiceOfEmployee(), DELTA);
-    }
 
     @Test
     public void mostCommonCharactersInEmployeesNamesShouldWorkCorrect() {
-        mockRepositoryWithNormalData();
+        Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
+                .thenReturn(Arrays.asList(this.nora, this.norman, this.norbert));
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
-        Assert.assertEquals(EXPECTED_COMMON_CHARACTERS_TO_STRING
+        Assert.assertEquals("[a, b, f]"
                 , employeeService.mostCommonCharactersInEmployeesNames().toString());
     }
 
     @Test
     public void fillEmployeeNamesInToMapShouldWorkCorrect(){
-        mockRepositoryWithNormalData();
+        Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
+                .thenReturn(Arrays.asList(this.maximilian, this.maximilian, this.maximilian));
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
         HashMap<Character, Integer> map = new HashMap<>();
         for (Employee employee : this.mockedEmployeeRepository.getEmployeeList()) {
@@ -157,31 +149,9 @@ public class EmployeeServiceTest {
         Assert.assertEquals(this.employeeService.fillEmployeeNamesInToMap(), map);
     }
 
-
-    private void mockRepositoryWithNormalData() {
-        Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
-                .thenReturn(Arrays.asList(this.employeeOne, this.employeeTwo, this.employeeThree));
-    }
-
-    private void mockRepositoryWithCornerCaseMaxData() {
-        Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
-                .thenReturn(Arrays.asList(this.mockedEmployeeOne, this.mockedEmployeeOne));
-    }
-
-    private void mockRepositoryWithCornerCaseMinData() {
-        Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
-                .thenReturn(Arrays.asList(this.mockedEmployeeTwo, this.mockedEmployeeTwo));
-    }
-
-    private void mockRepositoryWithMixedData() {
-        Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
-                .thenReturn(Arrays.asList(this.mockedEmployeeTwo, this.employeeOne, this.employeeThree));
-    }
-
-
     private List<String> expectedLoggedErrors() {
-        List<String> loggedMessages = Arrays.asList(ILLEGAL_EMPLOYEE_NAME_EXPECTED_MESSAGE
-                , ILLEGAL_EMPLOYEE_LENGTH_OF_SERVICE_EXPECTED_MESSAGE, ILLEGAL_EMPLOYEE_AGE_EXPECTED_MESSAGE);
+        List<String> loggedMessages = Arrays.asList("Illegal employee name:"
+                , "Illegal employee length of service: -2.0", "Illegal employee age: -1");
         return loggedMessages;
     }
 
@@ -202,17 +172,13 @@ public class EmployeeServiceTest {
 
     private List<String> getExpectedLoggedMessages() {
         List<String> loggedMessages = new ArrayList<>();
-        loggedMessages.add(AVERAGE_AGE_OF_EMPLOYEES_MESSAGE
-                .substring(0, AVERAGE_AGE_OF_EMPLOYEES_MESSAGE.length() - 2) +
+        loggedMessages.add("Average age of employees: " +
                 this.employeeService.averageAgeOfEmployees());
-        loggedMessages.add(FIRST_THREE_MOST_COMMON_CHARACTERS_MESSAGE
-                .substring(0, FIRST_THREE_MOST_COMMON_CHARACTERS_MESSAGE.length() - 2)
+        loggedMessages.add("First three most common characters: "
                 + this.employeeService.mostCommonCharactersInEmployeesNames().toString());
-        loggedMessages.add(AVERAGE_LENGTH_OF_SERVICE_OF_THE_EMPLOYEES_MESSAGE
-                .substring(0, AVERAGE_LENGTH_OF_SERVICE_OF_THE_EMPLOYEES_MESSAGE.length() - 2)
+        loggedMessages.add("Average length of service of the employees: "
                 + this.employeeService.averageLengthOfServiceOfEmployees());
-        loggedMessages.add(MAXIMUM_LENGTH_OF_SERVICE_AMONG_ALL_EMPLOYEES_MESSAGE
-                .substring(0, MAXIMUM_LENGTH_OF_SERVICE_AMONG_ALL_EMPLOYEES_MESSAGE.length() - 2)
+        loggedMessages.add("Maximum length of service among all employees: "
                 + this.employeeService.maximumLengthOfServiceOfEmployee());
 
         return loggedMessages;
