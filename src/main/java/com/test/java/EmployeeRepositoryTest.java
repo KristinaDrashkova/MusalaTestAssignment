@@ -7,36 +7,26 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.lang.reflect.Field;
-import java.util.List;
+import static com.test.java.PredefinedEmployeeTestSubjects.NORMAN;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class EmployeeRepositoryTest {
-    private final static String FIELD_NAME = "employeeList";
-    private EmployeeRepository employeeRepository;
-    private Employee mockedEmployeeOne;
+    private EmployeeRepository employeeRepository = new EmployeeRepository();
 
 
-    @Before
-    public void initialize(){
-        this.employeeRepository = new EmployeeRepository();
-        this.mockedEmployeeOne = Mockito.mock(Employee.class);
-
-    }
 
     @Test(expected = UnsupportedOperationException.class)
     public void getEmployeeListShouldReturnUnmodifiableList() {
-        this.employeeRepository.getEmployeeList().add(this.mockedEmployeeOne);
+        this.employeeRepository.getEmployeeList().add(NORMAN);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
-    public void addEmployeeListShouldAddEmployeeInList() throws NoSuchFieldException, IllegalAccessException {
-        this.employeeRepository.addEmployee(this.mockedEmployeeOne);
-        Field listField = this.employeeRepository.getClass().getDeclaredField(FIELD_NAME);
-        listField.setAccessible(true);
-        List<Employee> employees = (List<Employee>) listField.get(this.employeeRepository);
-        Employee employee = employees.get(employees.size() - 1);
-        Assert.assertEquals(this.mockedEmployeeOne, employee);
+    public void addEmployeeListShouldAddEmployeeInList() {
+        EmployeeRepository spy = spy(new EmployeeRepository());
+        spy.addEmployee(NORMAN);
+        verify(spy, times(1)).addEmployee(any());
     }
-
 }

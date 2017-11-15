@@ -156,12 +156,10 @@ public class EmployeeService implements IEmployeeService {
      */
     @Override
     public List<Character> mostCommonCharactersInEmployeesNames() {
-        List<Character> mostCommonCharactersList = countCharactersInEmployeeNames().entrySet().stream()
+
+        return countCharactersInEmployeeNames().entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .limit(3).map(Map.Entry::getKey).collect(Collectors.toList());
-
-
-        return mostCommonCharactersList;
     }
 
     /**
