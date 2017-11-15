@@ -1,11 +1,9 @@
 package com.test.java;
 
-import com.musala.generala.models.Employee;
 import com.musala.generala.repositories.EmployeeRepository;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+
 
 import static com.test.java.PredefinedEmployeeTestSubjects.NORMAN;
 import static org.mockito.Matchers.any;
@@ -28,5 +26,7 @@ public class EmployeeRepositoryTest {
         EmployeeRepository spy = spy(new EmployeeRepository());
         spy.addEmployee(NORMAN);
         verify(spy, times(1)).addEmployee(any());
+        Assert.assertEquals(NORMAN, spy.getEmployeeList().get(0));
+        Assert.assertEquals(1, spy.getEmployeeList().size());
     }
 }

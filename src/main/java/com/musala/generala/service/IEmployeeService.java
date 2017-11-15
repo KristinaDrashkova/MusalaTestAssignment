@@ -1,4 +1,4 @@
-package com.musala.generala.interfaces;
+package com.musala.generala.service;
 
 import java.io.IOException;
 import java.util.HashMap;

@@ -1,7 +1,6 @@
 package com.musala.generala.service;
 
 import com.musala.generala.exeptions.NoEmployeesException;
-import com.musala.generala.interfaces.IEmployeeService;
 import com.musala.generala.models.Employee;
 import com.musala.generala.repositories.EmployeeRepository;
 import org.slf4j.Logger;
@@ -65,8 +64,9 @@ public class EmployeeService implements IEmployeeService {
                 }
             }
         } catch (IOException e) {
-            log("error", "Could not find file: {}", path);
-            throw new IOException("Could not find file " + path);
+            log("error", "Could not find file: {}" , path);
+            throw new IOException("Could not find file " + path + "\nOriginal exception message: " + e.getMessage());
+
         }
     }
 

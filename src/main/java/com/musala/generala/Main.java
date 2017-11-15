@@ -1,6 +1,6 @@
 package com.musala.generala;
 
-import com.musala.generala.interfaces.IEmployeeService;
+import com.musala.generala.service.IEmployeeService;
 import com.musala.generala.repositories.EmployeeRepository;
 import com.musala.generala.service.EmployeeService;
 import org.apache.log4j.PropertyConfigurator;

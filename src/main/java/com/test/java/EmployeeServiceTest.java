@@ -2,6 +2,7 @@ package com.test.java;
 
 import com.musala.generala.repositories.EmployeeRepository;
 import com.musala.generala.service.EmployeeService;
+import org.apache.log4j.PropertyConfigurator;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
@@ -13,8 +14,8 @@ import static com.test.java.PredefinedEmployeeTestSubjects.*;
 import static org.mockito.Mockito.*;
 
 public class EmployeeServiceTest {
-    private static final String EMPLOYEE_INVALID_DATA_PATH =
-            "src/main/java/com/test/resources/employee invalid data.txt";
+    private static final String CONFIG_FILENAME_TEST_PATH = "src/main/java/com/test/WEB-INF/lib/log4j.properties";
+    private final static String RESOURCES_EMPLOYEE_DATA_PATH = "src/main/resources/employee data.txt";
     private static final String INVALID_PATH = "src/resources/employee invalid data.txt";
     private static final double DELTA = 1e-15;
     private EmployeeRepository mockedEmployeeRepository;
@@ -25,6 +26,7 @@ public class EmployeeServiceTest {
 
     @Before
     public void initialize() {
+        PropertyConfigurator.configure(CONFIG_FILENAME_TEST_PATH);
         this.mockedEmployeeRepository = Mockito.mock(EmployeeRepository.class);
         this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
     }
@@ -38,10 +40,8 @@ public class EmployeeServiceTest {
 
     @Test
     public void parseShouldWorkCorrectly() throws IOException {
-        EmployeeRepository spy = spy(new EmployeeRepository());
-        EmployeeService employeeService = new EmployeeService(spy);
-        employeeService.parse(EMPLOYEE_INVALID_DATA_PATH);
-        verify(spy, times(1)).addEmployee(any());
+        this.employeeService.parse(RESOURCES_EMPLOYEE_DATA_PATH);
+        verify(this.mockedEmployeeRepository, times(4)).addEmployee(any());
     }
 
     @Test
@@ -101,7 +101,7 @@ public class EmployeeServiceTest {
     public void fillEmployeeNamesInToMapShouldWorkCorrect(){
         Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
                 .thenReturn(Arrays.asList(MAXIMILIAN, MAXIMILIAN, MAXIMILIAN));
-        LinkedHashMap<Character, Integer> charactersInNames = this.employeeService.countCharactersInEmployeeNames();
+        HashMap<Character, Integer> charactersInNames = this.employeeService.countCharactersInEmployeeNames();
         Assert.assertTrue(charactersInNames.get(' ') == 6);
         Assert.assertTrue(charactersInNames.get('a') == 3);
         Assert.assertTrue(charactersInNames.get('b') == 3);
