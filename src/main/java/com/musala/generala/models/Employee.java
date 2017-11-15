@@ -27,7 +27,7 @@ public class Employee{
     private void setName(String name) {
         if (name.isEmpty()) {
             LOGGER.error("Illegal employee name: {}", name);
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal employee name: " + name);
         }
         this.name = name;
     }
@@ -44,7 +44,7 @@ public class Employee{
     private void setAge(int age) {
         if (age <= 0) {
             LOGGER.error("Illegal employee age: {}", age);
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal employee age: " + age);
         }
         this.age = age;
     }
@@ -61,7 +61,7 @@ public class Employee{
     private void setLengthOfService(double lengthOfService) {
         if (lengthOfService <= 0.0) {
             LOGGER.error("Illegal employee length of service: {}", lengthOfService);
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Illegal employee length of service: " + lengthOfService);
         }
         this.lengthOfService = lengthOfService;
     }

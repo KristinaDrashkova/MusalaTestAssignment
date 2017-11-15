@@ -16,5 +16,6 @@ public class Main {
         IEmployeeService employeeService = new EmployeeService(employeeRepository);
         employeeService.parse(RESOURCES_EMPLOYEE_DATA_PATH);
         employeeService.getEmployeeInfo();
+        
     }
 }
