@@ -34,7 +34,7 @@ public class EmployeeService implements IEmployeeService {
      * @param path to the file from which the data is parsed
      */
     @Override
-    public void parse(String path) {
+    public void parse(String path) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String currentLine;
             String name = "";
@@ -66,6 +66,7 @@ public class EmployeeService implements IEmployeeService {
             }
         } catch (IOException e) {
             log("error", "Could not find file: {}", path);
+            throw new IOException("Could not find file " + path);
         }
     }
 
@@ -155,7 +156,7 @@ public class EmployeeService implements IEmployeeService {
      */
     @Override
     public List<Character> mostCommonCharactersInEmployeesNames() {
-        List<Character> mostCommonCharactersList = fillEmployeeNamesInToMap().entrySet().stream()
+        List<Character> mostCommonCharactersList = countCharactersInEmployeeNames().entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .limit(3).map(Map.Entry::getKey).collect(Collectors.toList());
 
@@ -174,8 +175,8 @@ public class EmployeeService implements IEmployeeService {
      * in all the names of all the Employee in the EmployeeRepository as a value
      */
     @Override
-    public HashMap<Character, Integer> fillEmployeeNamesInToMap() {
-        HashMap<Character, Integer> charactersInNames = new HashMap<>();
+    public LinkedHashMap<Character, Integer> countCharactersInEmployeeNames() {
+        LinkedHashMap<Character, Integer> charactersInNames = new LinkedHashMap<>();
         for (Employee employee : this.employeeRepository.getEmployeeList()) {
             for (char c : employee.getName().toLowerCase().toCharArray()) {
                 if (!charactersInNames.containsKey(c)) {

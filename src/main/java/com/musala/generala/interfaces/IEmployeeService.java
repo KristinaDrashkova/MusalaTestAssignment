@@ -1,11 +1,13 @@
 package com.musala.generala.interfaces;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public interface IEmployeeService {
 
-    void parse(String path);
+    void parse(String path) throws IOException;
 
     void getEmployeeInfo();
 
@@ -19,5 +21,5 @@ public interface IEmployeeService {
 
     List<Character> mostCommonCharactersInEmployeesNames();
 
-    HashMap<Character, Integer> fillEmployeeNamesInToMap();
+    LinkedHashMap<Character, Integer> countCharactersInEmployeeNames();
 }

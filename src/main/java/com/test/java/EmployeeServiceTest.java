@@ -1,22 +1,16 @@
 package com.test.java;
 
-import com.musala.generala.models.Employee;
 import com.musala.generala.repositories.EmployeeRepository;
 import com.musala.generala.service.EmployeeService;
-import org.apache.log4j.PropertyConfigurator;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static com.test.java.PredefinedEmployeeTestSubjects.*;
+import static org.mockito.Mockito.*;
 
 public class EmployeeServiceTest {
     private static final String EMPLOYEE_INVALID_DATA_PATH =
@@ -26,6 +20,9 @@ public class EmployeeServiceTest {
     private EmployeeRepository mockedEmployeeRepository;
     private EmployeeService employeeService;
 
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     @Before
     public void initialize() {
         this.mockedEmployeeRepository = Mockito.mock(EmployeeRepository.class);
@@ -33,25 +30,19 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    public void parseShouldLogErrorMessageWithWrongInputFilePath() {
-//        this.employeeService.parse(INVALID_PATH);
-//        List<String> loggedMessages = getLoggedMessages();
-//        String expectedMessage = "Could not find file: " + INVALID_PATH;
-//        Assert.assertTrue(loggedMessages.contains(expectedMessage));
+    public void parseShouldThrowExceptionWithInvalidInputPath() throws IOException {
+        this.thrown.expectMessage("Could not find file " + INVALID_PATH);
+        this.thrown.reportMissingExceptionWithMessage("Exception expected");
+        employeeService.parse(INVALID_PATH);
     }
 
     @Test
-    public void parseShouldLogErrorMessagesWithWrongInput() {
-//        this.employeeService.parse(EMPLOYEE_INVALID_DATA_PATH);
-//        List<String> loggedMessages = getLoggedMessages();
-//        for (String error : expectedLoggedErrors()) {
-//            Assert.assertTrue(loggedMessages.contains(error));
-//        }
+    public void parseShouldWorkCorrectly() throws IOException {
+        EmployeeRepository spy = spy(new EmployeeRepository());
+        EmployeeService employeeService = new EmployeeService(spy);
+        employeeService.parse(EMPLOYEE_INVALID_DATA_PATH);
+        verify(spy, times(1)).addEmployee(any());
     }
-
-    // TODO: test successful parsing
-
-
 
     @Test
     public void averageAgeOfEmployeesShouldCalculateCorrectWithNormalInputData(){
@@ -102,22 +93,19 @@ public class EmployeeServiceTest {
     public void mostCommonCharactersInEmployeesNamesShouldWorkCorrect() {
         Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
                 .thenReturn(Arrays.asList(NORA , NORMAN, NORBERT));
-        Assert.assertEquals("[a, b, f]"
-                , employeeService.mostCommonCharactersInEmployeesNames().toString());
+        Assert.assertArrayEquals(new Character[]{'a', 'b', 'f'},
+                this.employeeService.mostCommonCharactersInEmployeesNames().toArray(new Character[3]));
     }
 
     @Test
     public void fillEmployeeNamesInToMapShouldWorkCorrect(){
         Mockito.when(this.mockedEmployeeRepository.getEmployeeList())
                 .thenReturn(Arrays.asList(MAXIMILIAN, MAXIMILIAN, MAXIMILIAN));
-        HashMap<Character, Integer> map = new HashMap<>();
-        for (Employee employee : this.mockedEmployeeRepository.getEmployeeList()) {
-            for (Character ch : employee.getName().toLowerCase().toCharArray()) {
-                map.putIfAbsent(ch, 0);
-                map.put(ch, map.get(ch) + 1);
-            }
-        }
-
-        Assert.assertEquals(this.employeeService.fillEmployeeNamesInToMap(), map);
+        LinkedHashMap<Character, Integer> charactersInNames = this.employeeService.countCharactersInEmployeeNames();
+        Assert.assertTrue(charactersInNames.get(' ') == 6);
+        Assert.assertTrue(charactersInNames.get('a') == 3);
+        Assert.assertTrue(charactersInNames.get('b') == 3);
+        Assert.assertTrue(charactersInNames.get('c') == 3);
+        Assert.assertTrue(charactersInNames.size() == 4);
     }
 }
