@@ -14,7 +14,6 @@ import static com.test.java.PredefinedEmployeeTestSubjects.*;
 import static org.mockito.Mockito.*;
 
 public class EmployeeServiceTest {
-    private static final String CONFIG_FILENAME_TEST_PATH = "src/main/java/com/test/WEB-INF/lib/log4j.properties";
     private final static String RESOURCES_EMPLOYEE_DATA_PATH = "src/main/resources/employee data.txt";
     private static final String INVALID_PATH = "src/resources/employee invalid data.txt";
     private static final double DELTA = 1e-15;
