@@ -19,13 +19,13 @@ public class EmployeeIterator implements Iterator<Employee> {
 
     @Override
     public boolean hasNext() {
+        parse();
         if (this.cachedEmployee != null) {
             return true;
         } else if (this.isFinished) {
             return false;
-        } else {
-            return isParse();
         }
+        return false;
     }
 
     @Override
@@ -34,15 +34,12 @@ public class EmployeeIterator implements Iterator<Employee> {
     }
 
     private Employee nextEmployee() {
-        if (!hasNext()) {
-            throw new NoSuchElementException("No more employees");
-        }
         Employee currentEmployee = this.cachedEmployee;
         this.cachedEmployee = null;
         return currentEmployee;
     }
 
-    private boolean isParse() {
+    private void parse() {
         try {
             String line;
             String name = "";
@@ -50,7 +47,6 @@ public class EmployeeIterator implements Iterator<Employee> {
             double lengthOfService = 0.0;
             while ((line = this.bufferedReader.readLine()) != null && !line.trim().equals("<<>>")) {
                 String[] lineData = line.split(Pattern.quote("="));
-                if (line.trim().equals("<<>>")) {continue;}
                 String key = lineData[0];
                 String value = lineData.length == 1? "" : lineData[1];
                 switch (key) {
@@ -62,18 +58,18 @@ public class EmployeeIterator implements Iterator<Employee> {
                         break;
                     case "lengthOfService" : {
                         lengthOfService = Double.parseDouble(value.trim());
-                        try {
-                            this.cachedEmployee = new Employee(name, age, lengthOfService);
-                            return true;
-                        } catch (IllegalArgumentException e) {
-                            break;
-                        }
+                        break;
                     }
                 }
             }
+            try {
+                if (!name.equals("") || age != 0 || lengthOfService != 0) {
+                    this.cachedEmployee = new Employee(name, age, lengthOfService);
+                }
+            } catch (IllegalArgumentException ignored) {
+            }
             if (line == null) {
                 this.isFinished = true;
-                return false;
             }
         } catch(IOException ioe) {
             try {
@@ -83,7 +79,6 @@ public class EmployeeIterator implements Iterator<Employee> {
             }
             throw new IllegalStateException(ioe.toString());
         }
-        return true;
     }
 
     private void close() throws IOException {

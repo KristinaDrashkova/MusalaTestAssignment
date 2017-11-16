@@ -6,12 +6,8 @@ import com.musala.generala.repositories.EmployeeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -75,7 +71,7 @@ public class EmployeeService implements IEmployeeService {
 //    }
 
     @Override
-    public void getEmployeeInfo() throws FileNotFoundException {
+    public void getEmployeeInfo() throws IOException {
         this.employeeRepository.initializeIterator();
         if (!this.employeeRepository.getEmployeeIterator().hasNext()) {
             try {
@@ -114,7 +110,7 @@ public class EmployeeService implements IEmployeeService {
      * @see com.musala.generala.models.Employee
      */
     @Override
-    public double averageAgeOfEmployees() throws FileNotFoundException {
+    public double averageAgeOfEmployees() throws IOException {
         this.employeeRepository.initializeIterator();
         long employeeAgesSum = 0;
         double counter = 0.0;
@@ -134,7 +130,7 @@ public class EmployeeService implements IEmployeeService {
      * @see com.musala.generala.models.Employee
      */
     @Override
-    public double averageLengthOfServiceOfEmployees() throws FileNotFoundException {
+    public double averageLengthOfServiceOfEmployees() throws IOException {
         this.employeeRepository.initializeIterator();
         double employeeLengthOfServiceSum = 0.0;
         double counter = 0.0;
@@ -155,7 +151,7 @@ public class EmployeeService implements IEmployeeService {
      * @see com.musala.generala.models.Employee
      */
     @Override
-    public double maximumLengthOfServiceOfEmployee() throws FileNotFoundException {
+    public double maximumLengthOfServiceOfEmployee() throws IOException {
         this.employeeRepository.initializeIterator();
         double maxLengthOfService = 0;
         while (this.employeeRepository.getEmployeeIterator().hasNext()) {
@@ -176,7 +172,7 @@ public class EmployeeService implements IEmployeeService {
      * @see com.musala.generala.models.Employee
      */
     @Override
-    public List<Character> mostCommonCharactersInEmployeesNames() throws FileNotFoundException {
+    public List<Character> mostCommonCharactersInEmployeesNames() throws IOException {
 
         return countCharactersInEmployeeNames().entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
@@ -193,7 +189,7 @@ public class EmployeeService implements IEmployeeService {
      * @see com.musala.generala.models.Employee
      */
     @Override
-    public HashMap<Character, Integer> countCharactersInEmployeeNames() throws FileNotFoundException {
+    public HashMap<Character, Integer> countCharactersInEmployeeNames() throws IOException {
         this.employeeRepository.initializeIterator();
         HashMap<Character, Integer> countCharactersInNames = new LinkedHashMap<>();
         while (this.employeeRepository.getEmployeeIterator().hasNext()) {
