@@ -1,26 +1,22 @@
 package com.musala.generala.service;
 
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 
 public interface IEmployeeService {
 
-    void parse(String path) throws IOException;
-
-    void getEmployeeInfo();
+    void getEmployeeInfo() throws FileNotFoundException;
 
     void log(String status, String message, String parameters);
 
-    double averageAgeOfEmployees();
+    double averageAgeOfEmployees() throws FileNotFoundException;
 
-    double averageLengthOfServiceOfEmployees();
+    double averageLengthOfServiceOfEmployees() throws FileNotFoundException;
 
-    double maximumLengthOfServiceOfEmployee();
+    double maximumLengthOfServiceOfEmployee() throws FileNotFoundException;
 
-    List<Character> mostCommonCharactersInEmployeesNames();
+    List<Character> mostCommonCharactersInEmployeesNames() throws FileNotFoundException;
 
-    HashMap<Character, Integer> countCharactersInEmployeeNames();
-
-    void calculateEmployeeData();
+    HashMap<Character, Integer> countCharactersInEmployeeNames() throws FileNotFoundException;
 }

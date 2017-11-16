@@ -1,8 +1,11 @@
 package com.musala.generala.repositories;
 
 import com.musala.generala.models.Employee;
+import com.musala.generala.service.EmployeeIterator;
 
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 /**
  * The class that holds record of all Employee
@@ -11,30 +14,15 @@ import java.util.*;
  */
 
 public class EmployeeRepository{
-    private List<Employee> employeeList;
+    private final static String RESOURCES_EMPLOYEE_DATA_PATH = "src/main/resources/employee data.txt";
+    private EmployeeIterator employeeIterator;
 
-    public EmployeeRepository() {
-        this.employeeList = new ArrayList<>();
+    public EmployeeIterator getEmployeeIterator() {
+        return this.employeeIterator;
     }
 
-    /**
-     *  Returns List of Employee that is unmodifiable
-     *
-     * @see com.musala.generala.models.Employee
-     *
-     * @return unmodifiable list of Employee
-     */
-    public List<Employee> getEmployeeList() {
-        return Collections.unmodifiableList(this.employeeList);
+    public void initializeIterator() throws FileNotFoundException {
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(RESOURCES_EMPLOYEE_DATA_PATH));
+        this.employeeIterator = new EmployeeIterator(bufferedReader);
     }
-
-    /**
-     *
-     * @param employee to be added to the list
-     */
-    public void addEmployee(Employee employee) {
-        this.employeeList.add(employee);
-    }
-
-
 }
