@@ -2,7 +2,6 @@ package com.musala.generala.service;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public interface IEmployeeService {
@@ -21,5 +20,7 @@ public interface IEmployeeService {
 
     List<Character> mostCommonCharactersInEmployeesNames();
 
-    LinkedHashMap<Character, Integer> countCharactersInEmployeeNames();
+    HashMap<Character, Integer> countCharactersInEmployeeNames();
+
+    void calculateEmployeeData();
 }

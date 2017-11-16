@@ -27,7 +27,7 @@ public class EmployeeServiceTest {
     public void initialize() {
         PropertyConfigurator.configure(CONFIG_FILENAME_TEST_PATH);
         this.mockedEmployeeRepository = Mockito.mock(EmployeeRepository.class);
-        this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
+//        this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
     }
 
     @Test

@@ -21,9 +21,18 @@ public class EmployeeService implements IEmployeeService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(EmployeeService.class);
     private EmployeeRepository employeeRepository;
+    private EmployeeIterator employeeIterator;
+    private long employeeAgesSum;
+    private double employeeLengthOfServiceSum;
+    private double counter;
+    private double maxLengthOfService;
+    private HashMap<Character, Integer> countCharactersInNames;
 
-    public EmployeeService(EmployeeRepository employeeRepository) {
+    public EmployeeService(EmployeeRepository employeeRepository, EmployeeIterator employeeIterator) {
         this.employeeRepository = employeeRepository;
+        this.employeeIterator = employeeIterator;
+        this.countCharactersInNames = new LinkedHashMap<>();
+        calculateEmployeeData();
     }
 
 
@@ -41,17 +50,19 @@ public class EmployeeService implements IEmployeeService {
             double lengthOfService = 0;
             while ((currentLine = br.readLine()) != null) {
                 String[] lineData = currentLine.split(Pattern.quote("="));
-                if (currentLine.trim().equals("<<>>")) {continue;}
+                if (currentLine.trim().equals("<<>>")) {
+                    continue;
+                }
                 String key = lineData[0];
-                String value = lineData.length == 1? "" : lineData[1];
+                String value = lineData.length == 1 ? "" : lineData[1];
                 switch (key) {
-                    case "name" :
+                    case "name":
                         name = value.trim();
                         break;
-                    case "age" :
+                    case "age":
                         age = Integer.parseInt(value.trim());
                         break;
-                    case "lengthOfService" : {
+                    case "lengthOfService": {
                         lengthOfService = Double.parseDouble(value.trim());
                         try {
                             Employee employee = new Employee(name, age, lengthOfService);
@@ -60,11 +71,12 @@ public class EmployeeService implements IEmployeeService {
                         } catch (IllegalArgumentException e) {
                             log("error", "User {} has NOT been successfully added due to invalid input information", name);
                         }
-                    } break;
+                    }
+                    break;
                 }
             }
         } catch (IOException e) {
-            log("error", "Could not find file: {}" , path);
+            log("error", "Could not find file: {}", path);
             throw new IOException("Could not find file " + path + "\nOriginal exception message: " + e.getMessage());
 
         }
@@ -72,7 +84,22 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public void getEmployeeInfo() {
-        if (this.employeeRepository.getEmployeeList().size() == 0) {
+//        if (this.employeeRepository.getEmployeeList().size() == 0) {
+//            try {
+//                throw new NoEmployeesException("There are no employees");
+//            } catch (NoEmployeesException e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            log("info", "Average age of employees: {}", this.averageAgeOfEmployees() + "");
+//            log("info", "First three most common characters: {}"
+//                    , this.mostCommonCharactersInEmployeesNames().toString());
+//            log("info", "Average length of service of the employees: {}"
+//                    , this.averageLengthOfServiceOfEmployees() + "");
+//            log("info", "Maximum length of service among all employees: {}"
+//                    , this.maximumLengthOfServiceOfEmployee() + "");
+//        }
+        if (this.counter == 0) {
             try {
                 throw new NoEmployeesException("There are no employees");
             } catch (NoEmployeesException e) {
@@ -92,8 +119,12 @@ public class EmployeeService implements IEmployeeService {
     @Override
     public void log(String status, String message, String parameters) {
         switch (status) {
-            case "info" : LOGGER.info(message, parameters); break;
-            case "error" : LOGGER.error(message, parameters); break;
+            case "info":
+                LOGGER.info(message, parameters);
+                break;
+            case "error":
+                LOGGER.error(message, parameters);
+                break;
         }
     }
 
@@ -101,58 +132,57 @@ public class EmployeeService implements IEmployeeService {
      * Returns the calculated average age
      * from all the Employee in the EmployeeRepository
      *
-     * @see com.musala.generala.models.Employee
-     *
      * @return calculated average age
+     * @see com.musala.generala.models.Employee
      */
     @Override
     public double averageAgeOfEmployees() {
-        long employeesSumAges = this.employeeRepository.getEmployeeList().stream().mapToLong(Employee::getAge).sum();
-        double size = this.employeeRepository.getEmployeeList().size() * 1.00;
-        return  employeesSumAges / size;
+//        long employeesSumAges = this.employeeRepository.getEmployeeList().stream().mapToLong(Employee::getAge).sum();
+//        double size = this.employeeRepository.getEmployeeList().size() * 1.00;
+//        return  employeesSumAges / size;
+        return this.employeeAgesSum / this.counter;
     }
 
     /**
      * Returns calculated average length of service
      * from all the Employee in the EmployeeRepository
      *
-     * @see com.musala.generala.models.Employee
-     *
      * @return calculated average length of service
+     * @see com.musala.generala.models.Employee
      */
     @Override
     public double averageLengthOfServiceOfEmployees() {
-        double employeeSumLengthOfService = this.employeeRepository.getEmployeeList()
-                .stream().mapToDouble(Employee::getLengthOfService).sum();
-        double size = this.employeeRepository.getEmployeeList().size() * 1.00;
-        return employeeSumLengthOfService / size;
+//        double employeeSumLengthOfService = this.employeeRepository.getEmployeeList()
+//                .stream().mapToDouble(Employee::getLengthOfService).sum();
+//        double size = this.employeeRepository.getEmployeeList().size() * 1.00;
+//        return employeeSumLengthOfService / size;
+        return this.employeeLengthOfServiceSum / this.counter;
     }
 
     /**
      * Returns the maximum length of service
      * from all the Employee in the EmployeeRepository
      *
-     * @see com.musala.generala.models.Employee
-     *
      * @return the maximum length of service
+     * @see com.musala.generala.models.Employee
      */
     @Override
     public double maximumLengthOfServiceOfEmployee() {
-        Optional<Employee> optionalMaxLengthOfServiceEmployee =
-                this.employeeRepository.getEmployeeList().stream()
-                        .max(Comparator.comparing(Employee::getLengthOfService));
-        Employee employee = optionalMaxLengthOfServiceEmployee.get();
-        return employee.getLengthOfService();
+//        Optional<Employee> optionalMaxLengthOfServiceEmployee =
+//                this.employeeRepository.getEmployeeList().stream()
+//                        .max(Comparator.comparing(Employee::getLengthOfService));
+//        Employee employee = optionalMaxLengthOfServiceEmployee.get();
+//        return employee.getLengthOfService();
+        return this.maxLengthOfService;
     }
 
     /**
      * Returns list of the first three most common characters
      * from all the names of all the Employee in the EmployeeRepository
      *
-     * @see com.musala.generala.models.Employee
-     *
      * @return list of the first three most common characters
      * from all the names
+     * @see com.musala.generala.models.Employee
      */
     @Override
     public List<Character> mostCommonCharactersInEmployeesNames() {
@@ -167,25 +197,54 @@ public class EmployeeService implements IEmployeeService {
      * in the names of the all Employee in the EmployeeRepository
      * with the number of their occurrences as a value
      *
-     * @see com.musala.generala.models.Employee
-     *
      * @return HasMap with character for a key and its occurrence
      * in all the names of all the Employee in the EmployeeRepository as a value
+     * @see com.musala.generala.models.Employee
      */
     @Override
-    public LinkedHashMap<Character, Integer> countCharactersInEmployeeNames() {
-        LinkedHashMap<Character, Integer> charactersInNames = new LinkedHashMap<>();
-        for (Employee employee : this.employeeRepository.getEmployeeList()) {
-            for (char c : employee.getName().toLowerCase().toCharArray()) {
-                if (!charactersInNames.containsKey(c)) {
-                    charactersInNames.put(c, 0);
-                }
-                int value = charactersInNames.get(c);
-                value += 1;
-                charactersInNames.put(c, value);
-            }
-        }
+    public HashMap<Character, Integer> countCharactersInEmployeeNames() {
+//        LinkedHashMap<Character, Integer> charactersInNames = new LinkedHashMap<>();
+//        for (Employee employee : this.employeeRepository.getEmployeeList()) {
+//            for (char c : employee.getName().toLowerCase().toCharArray()) {
+//                if (!charactersInNames.containsKey(c)) {
+//                    charactersInNames.put(c, 0);
+//                }
+//                int value = charactersInNames.get(c);
+//                value += 1;
+//                charactersInNames.put(c, value);
+//            }
+//        }
+//
+//        return charactersInNames;
+        return this.countCharactersInNames;
+    }
 
-        return charactersInNames;
+    public EmployeeIterator getEmployeeIterator() {
+        return employeeIterator;
+    }
+
+    public void addNameInCharacterCountMap(String name) {
+        for (char c : name.toLowerCase().toCharArray()) {
+            if (!this.countCharactersInNames.containsKey(c)) {
+                this.countCharactersInNames.put(c, 0);
+            }
+            int value = this.countCharactersInNames.get(c);
+            value += 1;
+            this.countCharactersInNames.put(c, value);
+        }
+    }
+
+    @Override
+    public void calculateEmployeeData(){
+        while (getEmployeeIterator().hasNext()) {
+            Employee employee = getEmployeeIterator().next();
+            this.employeeAgesSum += employee.getAge();
+            this.employeeLengthOfServiceSum += employee.getLengthOfService();
+            if (this.maxLengthOfService < employee.getLengthOfService()){
+                this.maxLengthOfService = employee.getLengthOfService();
+            }
+            addNameInCharacterCountMap(employee.getName());
+            this.counter++;
+        }
     }
 }
