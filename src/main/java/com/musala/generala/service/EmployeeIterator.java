@@ -70,7 +70,8 @@ public class EmployeeIterator implements Iterator<Employee> {
             }
             try {
                 this.cachedEmployee = new Employee(name, age, lengthOfService);
-            } catch (IllegalArgumentException ignored) {
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
             }
             if (line == null) {
                 this.isFinished = true;
