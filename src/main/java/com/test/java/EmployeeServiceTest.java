@@ -1,6 +1,6 @@
 package com.test.java;
 
-import com.musala.generala.repositories.EmployeeRepository;
+import com.musala.generala.service.EmployeeIterator;
 import com.musala.generala.service.EmployeeService;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.*;
@@ -17,7 +17,6 @@ public class EmployeeServiceTest {
     private final static String RESOURCES_EMPLOYEE_DATA_PATH = "src/main/resources/employee data.txt";
     private static final String INVALID_PATH = "src/resources/employee invalid data.txt";
     private static final double DELTA = 1e-15;
-    private EmployeeRepository mockedEmployeeRepository;
     private EmployeeService employeeService;
 
     @Rule
@@ -26,20 +25,19 @@ public class EmployeeServiceTest {
     @Before
     public void initialize() {
         PropertyConfigurator.configure(CONFIG_FILENAME_TEST_PATH);
-        this.mockedEmployeeRepository = Mockito.mock(EmployeeRepository.class);
-//        this.employeeService = new EmployeeService(this.mockedEmployeeRepository);
+        this.employeeService = new EmployeeService();
     }
 
 //    @Test
 //    public void parseShouldThrowExceptionWithInvalidInputPath() throws IOException {
 //        this.thrown.expectMessage("Could not find file " + INVALID_PATH);
 //        this.thrown.reportMissingExceptionWithMessage("Exception expected");
-//        employeeService.parse(INVALID_PATH);
+//        this.employeeService.
 //    }
-//
+
 //    @Test
 //    public void parseShouldWorkCorrectly() throws IOException {
-//        this.employeeService.parse(RESOURCES_EMPLOYEE_DATA_PATH);
+//        this.employeeService();
 //        verify(this.mockedEmployeeRepository, times(4)).addEmployee(any());
 //    }
 //

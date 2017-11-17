@@ -1,7 +1,6 @@
 package com.musala.generala;
 
 import com.musala.generala.service.IEmployeeService;
-import com.musala.generala.repositories.EmployeeRepository;
 import com.musala.generala.service.EmployeeService;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -13,8 +12,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         PropertyConfigurator.configure(CONFIG_FILENAME_PATH);
-        EmployeeRepository employeeRepository = new EmployeeRepository();
-        IEmployeeService employeeService = new EmployeeService(employeeRepository);
+        IEmployeeService employeeService = new EmployeeService();
         employeeService.getEmployeeInfo();
     }
 }

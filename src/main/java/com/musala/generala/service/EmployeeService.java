@@ -2,7 +2,6 @@ package com.musala.generala.service;
 
 import com.musala.generala.exeptions.NoEmployeesException;
 import com.musala.generala.models.Employee;
-import com.musala.generala.repositories.EmployeeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,90 +16,36 @@ import java.util.stream.Collectors;
 public class EmployeeService implements IEmployeeService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(EmployeeService.class);
-    private EmployeeRepository employeeRepository;
-
-    public EmployeeService(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
-
-
-//    /**
-//     * Reads data from file and parses it to the project repository
-//     *
-//     * @param path to the file from which the data is parsed
-//     */
-//    @Override
-//    public void parse(String path) throws IOException {
-//        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-//            String currentLine;
-//            String name = "";
-//            int age = 0;
-//            double lengthOfService = 0;
-//            while ((currentLine = br.readLine()) != null) {
-//                String[] lineData = currentLine.split(Pattern.quote("="));
-//                if (currentLine.trim().equals("<<>>")) {
-//                    continue;
-//                }
-//                String key = lineData[0];
-//                String value = lineData.length == 1 ? "" : lineData[1];
-//                switch (key) {
-//                    case "name":
-//                        name = value.trim();
-//                        break;
-//                    case "age":
-//                        age = Integer.parseInt(value.trim());
-//                        break;
-//                    case "lengthOfService": {
-//                        lengthOfService = Double.parseDouble(value.trim());
-//                        try {
-//                            Employee employee = new Employee(name, age, lengthOfService);
-//                            this.employeeRepository.addEmployee(employee);
-//                            log("info", "User {} has been successfully added", name);
-//                        } catch (IllegalArgumentException e) {
-//                            log("error", "User {} has NOT been successfully added due to invalid input information", name);
-//                        }
-//                    }
-//                    break;
-//                }
-//            }
-//        } catch (IOException e) {
-//            log("error", "Could not find file: {}", path);
-//            throw new IOException("Could not find file " + path + "\nOriginal exception message: " + e.getMessage());
-//
-//        }
-//    }
+    private static final String RESOURCES_EMPLOYEE_DATA_PATH = "src/main/resources/employee data.txt";
 
     @Override
     public void getEmployeeInfo() throws IOException {
-        this.employeeRepository.initializeIterator();
-        if (!this.employeeRepository.getEmployeeIterator().hasNext()) {
+        EmployeeIterator employeeIterator = new EmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
+        if (!employeeIterator.hasNext()) {
             try {
+                LOGGER.error("There are no employees");
                 throw new NoEmployeesException("There are no employees");
             } catch (NoEmployeesException e) {
                 e.printStackTrace();
             }
         } else {
-            log("info", "Average age of employees: {}", this.averageAgeOfEmployees() + "");
-            log("info", "First three most common characters: {}"
+            LOGGER.info("Average age of employees: {}", this.averageAgeOfEmployees() + "");
+            System.out.println("Average age of employees: "+  this.averageAgeOfEmployees());
+            LOGGER.info("First three most common characters: {}"
                     , this.mostCommonCharactersInEmployeesNames().toString());
-            log("info", "Average length of service of the employees: {}"
+            System.out.println("First three most common characters: "
+                    +this.mostCommonCharactersInEmployeesNames().toString());
+            LOGGER.info("Average length of service of the employees: {}"
                     , this.averageLengthOfServiceOfEmployees() + "");
-            log("info", "Maximum length of service among all employees: {}"
+            System.out.println("Average length of service of the employees: " +
+                    this.averageLengthOfServiceOfEmployees());
+            LOGGER.info("Maximum length of service among all employees: {}"
                     , this.maximumLengthOfServiceOfEmployee() + "");
+            System.out.println("Maximum length of service among all employees: "
+                    + this.maximumLengthOfServiceOfEmployee());
         }
     }
 
-    @Override
-    public void log(String status, String message, String parameters) {
-        switch (status) {
-            case "info":
-                LOGGER.info(message, parameters);
-                break;
-            case "error":
-                LOGGER.error(message, parameters);
-                break;
-        }
-    }
 
     /**
      * Returns the calculated average age
@@ -111,11 +56,11 @@ public class EmployeeService implements IEmployeeService {
      */
     @Override
     public double averageAgeOfEmployees() throws IOException {
-        this.employeeRepository.initializeIterator();
+        EmployeeIterator employeeIterator = new EmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
         long employeeAgesSum = 0;
         double counter = 0.0;
-        while (this.employeeRepository.getEmployeeIterator().hasNext()) {
-            Employee employee = this.employeeRepository.getEmployeeIterator().next();
+        while (employeeIterator.hasNext()) {
+            Employee employee = employeeIterator.next();
             employeeAgesSum += employee.getAge();
             counter++;
         }
@@ -131,11 +76,11 @@ public class EmployeeService implements IEmployeeService {
      */
     @Override
     public double averageLengthOfServiceOfEmployees() throws IOException {
-        this.employeeRepository.initializeIterator();
+        EmployeeIterator employeeIterator = new EmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
         double employeeLengthOfServiceSum = 0.0;
         double counter = 0.0;
-        while (this.employeeRepository.getEmployeeIterator().hasNext()) {
-            Employee employee = this.employeeRepository.getEmployeeIterator().next();
+        while (employeeIterator.hasNext()) {
+            Employee employee = employeeIterator.next();
             employeeLengthOfServiceSum += employee.getLengthOfService();
             counter++;
         }
@@ -152,10 +97,10 @@ public class EmployeeService implements IEmployeeService {
      */
     @Override
     public double maximumLengthOfServiceOfEmployee() throws IOException {
-        this.employeeRepository.initializeIterator();
+        EmployeeIterator employeeIterator = new EmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
         double maxLengthOfService = 0;
-        while (this.employeeRepository.getEmployeeIterator().hasNext()) {
-            Employee employee = this.employeeRepository.getEmployeeIterator().next();
+        while (employeeIterator.hasNext()) {
+            Employee employee = employeeIterator.next();
             if (employee.getLengthOfService() > maxLengthOfService) {
                 maxLengthOfService = employee.getLengthOfService();
             }
@@ -190,10 +135,10 @@ public class EmployeeService implements IEmployeeService {
      */
     @Override
     public HashMap<Character, Integer> countCharactersInEmployeeNames() throws IOException {
-        this.employeeRepository.initializeIterator();
+        EmployeeIterator employeeIterator = new EmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
         HashMap<Character, Integer> countCharactersInNames = new LinkedHashMap<>();
-        while (this.employeeRepository.getEmployeeIterator().hasNext()) {
-            Employee employee = this.employeeRepository.getEmployeeIterator().next();
+        while (employeeIterator.hasNext()) {
+            Employee employee = employeeIterator.next();
             for (char c : employee.getName().toLowerCase().toCharArray()) {
                 if (!countCharactersInNames.containsKey(c)) {
                     countCharactersInNames.put(c, 0);

@@ -8,8 +8,6 @@ public interface IEmployeeService {
 
     void getEmployeeInfo() throws IOException;
 
-    void log(String status, String message, String parameters);
-
     double averageAgeOfEmployees() throws IOException;
 
     double averageLengthOfServiceOfEmployees() throws IOException;

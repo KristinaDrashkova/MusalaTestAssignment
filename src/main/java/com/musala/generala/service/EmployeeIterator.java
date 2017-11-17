@@ -3,29 +3,35 @@ package com.musala.generala.service;
 import com.musala.generala.models.Employee;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
 public class EmployeeIterator implements Iterator<Employee> {
-    private final BufferedReader bufferedReader;
     private Employee cachedEmployee;
     private boolean isFinished = false;
+    private BufferedReader bufferedReader;
 
-    public EmployeeIterator(BufferedReader bufferedReader) {
-        this.bufferedReader = bufferedReader;
+    public EmployeeIterator(String path) throws IOException {
+        try {
+            this.bufferedReader = new BufferedReader(new FileReader(path));
+        } catch (FileNotFoundException e) {
+            throw new IOException("Could not find file " + path +
+                    "\nOriginal exception message: " + e.getMessage());
+        }
     }
 
     @Override
     public boolean hasNext() {
-        parse();
         if (this.cachedEmployee != null) {
             return true;
         } else if (this.isFinished) {
             return false;
         }
-        return false;
+        parse();
+        return !(this.isFinished && this.cachedEmployee == null);
     }
 
     @Override
@@ -63,9 +69,7 @@ public class EmployeeIterator implements Iterator<Employee> {
                 }
             }
             try {
-                if (!name.equals("") || age != 0 || lengthOfService != 0) {
-                    this.cachedEmployee = new Employee(name, age, lengthOfService);
-                }
+                this.cachedEmployee = new Employee(name, age, lengthOfService);
             } catch (IllegalArgumentException ignored) {
             }
             if (line == null) {
