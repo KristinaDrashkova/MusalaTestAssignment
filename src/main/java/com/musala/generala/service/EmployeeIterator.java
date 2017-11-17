@@ -88,6 +88,6 @@ public class EmployeeIterator implements Iterator<Employee> {
     private void close() throws IOException {
         this.isFinished = true;
         this.cachedEmployee = null;
-        this.bufferedReader.close();
+        bufferedReader.close();
     }
 }
