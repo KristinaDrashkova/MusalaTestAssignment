@@ -2,24 +2,19 @@ package com.musala.generala.service;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public interface IEmployeeService {
 
-    void parse(String path) throws IOException;
+    void getEmployeeInfo() throws IOException;
 
-    void getEmployeeInfo();
+    double averageAgeOfEmployees() throws IOException;
 
-    void log(String status, String message, String parameters);
+    double averageLengthOfServiceOfEmployees() throws IOException;
 
-    double averageAgeOfEmployees();
+    double maximumLengthOfServiceOfEmployee() throws IOException;
 
-    double averageLengthOfServiceOfEmployees();
+    List<Character> mostCommonCharactersInEmployeesNames() throws IOException;
 
-    double maximumLengthOfServiceOfEmployee();
-
-    List<Character> mostCommonCharactersInEmployeesNames();
-
-    LinkedHashMap<Character, Integer> countCharactersInEmployeeNames();
+    HashMap<Character, Integer> countCharactersInEmployeeNames() throws IOException;
 }
