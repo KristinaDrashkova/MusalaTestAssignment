@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface IEmployeeService {
 
-    void getEmployeeInfo() throws IOException;
+    void getEmployeeInfo(String path) throws IOException;
 
-    double averageAgeOfEmployees() throws IOException;
+    double averageAgeOfEmployees(String path) throws IOException;
 
-    double averageLengthOfServiceOfEmployees() throws IOException;
+    double averageLengthOfServiceOfEmployees(String path) throws IOException;
 
-    double maximumLengthOfServiceOfEmployee() throws IOException;
+    double maximumLengthOfServiceOfEmployee(String path) throws IOException;
 
-    List<Character> mostCommonCharactersInEmployeesNames() throws IOException;
+    List<Character> mostCommonCharactersInEmployeesNames(String path) throws IOException;
 
-    HashMap<Character, Integer> countCharactersInEmployeeNames() throws IOException;
+    HashMap<Character, Integer> countCharactersInEmployeeNames(String path) throws IOException;
 }

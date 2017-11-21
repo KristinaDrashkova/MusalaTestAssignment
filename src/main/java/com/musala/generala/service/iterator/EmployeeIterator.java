@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
-public class EmployeeIterator implements Iterator<Employee> {
+class EmployeeIterator implements Iterator<Employee> {
     private Employee cachedEmployee;
     private boolean isFinished = false;
     private BufferedReader bufferedReader;

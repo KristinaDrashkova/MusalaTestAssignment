@@ -1,7 +1,6 @@
 package com.musala.generala.service;
 
 import com.musala.generala.exeptions.NoEmployeesException;
-import com.musala.generala.service.iterator.EmployeeIterator;
 import com.musala.generala.service.iterator.EmployeeIteratorFactory;
 import com.musala.generala.models.Employee;
 import org.slf4j.Logger;
@@ -16,7 +15,6 @@ import java.util.stream.Collectors;
  * for more information check the methods documentation
  */
 public class EmployeeService implements IEmployeeService {
-    private static final String RESOURCES_EMPLOYEE_DATA_PATH = "src/main/resources/employee data.txt";
     private final static Logger LOGGER = LoggerFactory.getLogger(EmployeeService.class);
     private EmployeeIteratorFactory employeeIteratorFactory;
 
@@ -25,8 +23,8 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public void getEmployeeInfo() throws IOException {
-        EmployeeIterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
+    public void getEmployeeInfo(String path) throws IOException {
+        Iterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(path);
         if (!employeeIterator.hasNext()) {
             try {
                 LOGGER.error("There are no employees");
@@ -35,13 +33,13 @@ public class EmployeeService implements IEmployeeService {
                 e.printStackTrace();
             }
         } else {
-            LOGGER.info("Average age of employees: {}", this.averageAgeOfEmployees() + "");
+            LOGGER.info("Average age of employees: {}", this.averageAgeOfEmployees(path) + "");
             LOGGER.info("First three most common characters: {}"
-                    , this.mostCommonCharactersInEmployeesNames().toString());
+                    , this.mostCommonCharactersInEmployeesNames(path).toString());
             LOGGER.info("Average length of service of the employees: {}"
-                    , this.averageLengthOfServiceOfEmployees() + "");
+                    , this.averageLengthOfServiceOfEmployees(path) + "");
             LOGGER.info("Maximum length of service among all employees: {}"
-                    , this.maximumLengthOfServiceOfEmployee() + "");
+                    , this.maximumLengthOfServiceOfEmployee(path) + "");
         }
     }
 
@@ -54,8 +52,8 @@ public class EmployeeService implements IEmployeeService {
      * @see com.musala.generala.models.Employee
      */
     @Override
-    public double averageAgeOfEmployees() throws IOException {
-        EmployeeIterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
+    public double averageAgeOfEmployees(String path) throws IOException {
+        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(path);
         long employeeAgesSum = 0;
         double counter = 0.0;
         while (employeeIterator.hasNext()) {
@@ -74,8 +72,8 @@ public class EmployeeService implements IEmployeeService {
      * @see com.musala.generala.models.Employee
      */
     @Override
-    public double averageLengthOfServiceOfEmployees() throws IOException {
-        EmployeeIterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
+    public double averageLengthOfServiceOfEmployees(String path) throws IOException {
+        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(path);
         double employeeLengthOfServiceSum = 0.0;
         double counter = 0.0;
         while (employeeIterator.hasNext()) {
@@ -95,8 +93,8 @@ public class EmployeeService implements IEmployeeService {
      * @see com.musala.generala.models.Employee
      */
     @Override
-    public double maximumLengthOfServiceOfEmployee() throws IOException {
-        EmployeeIterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
+    public double maximumLengthOfServiceOfEmployee(String path) throws IOException {
+        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(path);
         double maxLengthOfService = 0;
         while (employeeIterator.hasNext()) {
             Employee employee = employeeIterator.next();
@@ -116,8 +114,8 @@ public class EmployeeService implements IEmployeeService {
      * @see com.musala.generala.models.Employee
      */
     @Override
-    public List<Character> mostCommonCharactersInEmployeesNames() throws IOException {
-        return countCharactersInEmployeeNames().entrySet().stream()
+    public List<Character> mostCommonCharactersInEmployeesNames(String path) throws IOException {
+        return countCharactersInEmployeeNames(path).entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .limit(3).map(Map.Entry::getKey).collect(Collectors.toList());
     }
@@ -132,8 +130,8 @@ public class EmployeeService implements IEmployeeService {
      * @see com.musala.generala.models.Employee
      */
     @Override
-    public HashMap<Character, Integer> countCharactersInEmployeeNames() throws IOException {
-        EmployeeIterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
+    public HashMap<Character, Integer> countCharactersInEmployeeNames(String path) throws IOException {
+        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(path);
         HashMap<Character, Integer> countCharactersInNames = new LinkedHashMap<>();
         while (employeeIterator.hasNext()) {
             Employee employee = employeeIterator.next();
