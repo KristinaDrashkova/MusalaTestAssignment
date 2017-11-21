@@ -1,4 +1,4 @@
-package com.musala.generala.service;
+package com.musala.generala.service.iterator;
 
 import com.musala.generala.models.Employee;
 
@@ -12,7 +12,7 @@ public class EmployeeIterator implements Iterator<Employee> {
     private boolean isFinished = false;
     private BufferedReader bufferedReader;
 
-    public EmployeeIterator(BufferedReader bufferedReader) throws IOException {
+    EmployeeIterator(BufferedReader bufferedReader) throws IOException {
         this.bufferedReader = bufferedReader;
     }
 

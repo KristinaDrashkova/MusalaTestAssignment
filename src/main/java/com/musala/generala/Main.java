@@ -1,6 +1,6 @@
 package com.musala.generala;
 
-import com.musala.generala.service.EmployeeIteratorFactory;
+import com.musala.generala.service.iterator.EmployeeIteratorFactory;
 import com.musala.generala.service.IEmployeeService;
 import com.musala.generala.service.EmployeeService;
 import org.apache.log4j.PropertyConfigurator;

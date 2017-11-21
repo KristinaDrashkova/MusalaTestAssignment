@@ -1,4 +1,4 @@
-package com.musala.generala.service;
+package com.musala.generala.service.iterator;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

@@ -1,7 +1,7 @@
 package com.test.java;
 
-import com.musala.generala.service.EmployeeIterator;
-import com.musala.generala.service.EmployeeIteratorFactory;
+import com.musala.generala.service.iterator.EmployeeIterator;
+import com.musala.generala.service.iterator.EmployeeIteratorFactory;
 import com.musala.generala.service.EmployeeService;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.*;

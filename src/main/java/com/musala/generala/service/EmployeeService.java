@@ -1,6 +1,8 @@
 package com.musala.generala.service;
 
 import com.musala.generala.exeptions.NoEmployeesException;
+import com.musala.generala.service.iterator.EmployeeIterator;
+import com.musala.generala.service.iterator.EmployeeIteratorFactory;
 import com.musala.generala.models.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

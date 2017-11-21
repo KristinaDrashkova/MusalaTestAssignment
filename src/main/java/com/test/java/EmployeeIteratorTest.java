@@ -1,14 +1,11 @@
 package com.test.java;
 
-import com.musala.generala.service.EmployeeIterator;
+import com.musala.generala.service.iterator.EmployeeIterator;
+import com.musala.generala.service.iterator.EmployeeIteratorFactory;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 
 import static com.test.java.PredefinedEmployeeTestSubjects.CONFIG_FILENAME_TEST_PATH;
@@ -25,16 +22,13 @@ public class EmployeeIteratorTest {
 
     @Test()
     public void hasNextShouldReturnFalseWithEmptyCollection() throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(EMPTY_FILE_PATH));
-        EmployeeIterator employeeIterator = new EmployeeIterator(bufferedReader);
+        EmployeeIterator employeeIterator = new EmployeeIteratorFactory().getEmployeeIterator(EMPTY_FILE_PATH);
         Assert.assertEquals(false, employeeIterator.hasNext());
-        bufferedReader.close();
     }
 
     @Test
     public void hasNextAndNextShouldWorkCorrectly() throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(RESOURCES_EMPLOYEE_DATA_PATH));
-        EmployeeIterator employeeIterator = new EmployeeIterator(bufferedReader);
+        EmployeeIterator employeeIterator = new EmployeeIteratorFactory().getEmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
         Assert.assertEquals(true, employeeIterator.hasNext());
         employeeIterator.next();
         Assert.assertEquals(true, employeeIterator.hasNext());
@@ -44,6 +38,5 @@ public class EmployeeIteratorTest {
         Assert.assertEquals(true, employeeIterator.hasNext());
         employeeIterator.next();
         Assert.assertEquals(false, employeeIterator.hasNext());
-        bufferedReader.close();
     }
 }

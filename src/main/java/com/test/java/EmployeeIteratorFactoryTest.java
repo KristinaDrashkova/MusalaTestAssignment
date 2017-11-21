@@ -1,6 +1,6 @@
 package com.test.java;
 
-import com.musala.generala.service.EmployeeIteratorFactory;
+import com.musala.generala.service.iterator.EmployeeIteratorFactory;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
