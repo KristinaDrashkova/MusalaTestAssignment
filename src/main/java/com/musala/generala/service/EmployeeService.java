@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * for more information check the methods documentation
  */
 public class EmployeeService implements IEmployeeService {
-
+    private static final String RESOURCES_EMPLOYEE_DATA_PATH = "src/main/resources/employee data.txt";
     private final static Logger LOGGER = LoggerFactory.getLogger(EmployeeService.class);
     private EmployeeIteratorFactory employeeIteratorFactory;
 
@@ -24,7 +24,7 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public void getEmployeeInfo() throws IOException {
-        EmployeeIterator employeeIterator = employeeIteratorFactory.getEmployeeIterator();
+        EmployeeIterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
         if (!employeeIterator.hasNext()) {
             try {
                 LOGGER.error("There are no employees");
@@ -34,19 +34,12 @@ public class EmployeeService implements IEmployeeService {
             }
         } else {
             LOGGER.info("Average age of employees: {}", this.averageAgeOfEmployees() + "");
-            System.out.println("Average age of employees: "+  this.averageAgeOfEmployees());
             LOGGER.info("First three most common characters: {}"
                     , this.mostCommonCharactersInEmployeesNames().toString());
-            System.out.println("First three most common characters: "
-                    +this.mostCommonCharactersInEmployeesNames().toString());
             LOGGER.info("Average length of service of the employees: {}"
                     , this.averageLengthOfServiceOfEmployees() + "");
-            System.out.println("Average length of service of the employees: " +
-                    this.averageLengthOfServiceOfEmployees());
             LOGGER.info("Maximum length of service among all employees: {}"
                     , this.maximumLengthOfServiceOfEmployee() + "");
-            System.out.println("Maximum length of service among all employees: "
-                    + this.maximumLengthOfServiceOfEmployee());
         }
     }
 
@@ -60,7 +53,7 @@ public class EmployeeService implements IEmployeeService {
      */
     @Override
     public double averageAgeOfEmployees() throws IOException {
-        EmployeeIterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
+        EmployeeIterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
         long employeeAgesSum = 0;
         double counter = 0.0;
         while (employeeIterator.hasNext()) {
@@ -80,7 +73,7 @@ public class EmployeeService implements IEmployeeService {
      */
     @Override
     public double averageLengthOfServiceOfEmployees() throws IOException {
-        EmployeeIterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
+        EmployeeIterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
         double employeeLengthOfServiceSum = 0.0;
         double counter = 0.0;
         while (employeeIterator.hasNext()) {
@@ -101,7 +94,7 @@ public class EmployeeService implements IEmployeeService {
      */
     @Override
     public double maximumLengthOfServiceOfEmployee() throws IOException {
-        EmployeeIterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
+        EmployeeIterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
         double maxLengthOfService = 0;
         while (employeeIterator.hasNext()) {
             Employee employee = employeeIterator.next();
@@ -138,7 +131,7 @@ public class EmployeeService implements IEmployeeService {
      */
     @Override
     public HashMap<Character, Integer> countCharactersInEmployeeNames() throws IOException {
-        EmployeeIterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
+        EmployeeIterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
         HashMap<Character, Integer> countCharactersInNames = new LinkedHashMap<>();
         while (employeeIterator.hasNext()) {
             Employee employee = employeeIterator.next();

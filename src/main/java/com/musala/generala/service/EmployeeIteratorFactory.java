@@ -6,15 +6,12 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class EmployeeIteratorFactory {
-    private static final String RESOURCES_EMPLOYEE_DATA_PATH = "src/main/resources/employee data.txt";
-
-
-    public EmployeeIterator getEmployeeIterator() throws IOException {
+    public EmployeeIterator getEmployeeIterator(String path) throws IOException {
         BufferedReader bufferedReader;
         try {
-            bufferedReader = new BufferedReader(new FileReader(RESOURCES_EMPLOYEE_DATA_PATH));
+            bufferedReader = new BufferedReader(new FileReader(path));
         } catch (FileNotFoundException e) {
-            throw new IOException("Could not find file " + RESOURCES_EMPLOYEE_DATA_PATH +
+            throw new IOException("Could not find file " + path +
                     "\nOriginal exception message: " + e.getMessage());
         }
         return new EmployeeIterator(bufferedReader);

@@ -24,8 +24,10 @@ public class EmployeeServiceTest {
         this.mockedEmployeeIterator = Mockito.mock(EmployeeIterator.class);
         EmployeeIteratorFactory mockedEmployeeIteratorFactory = Mockito.mock(EmployeeIteratorFactory.class);
         this.employeeService = new EmployeeService(mockedEmployeeIteratorFactory);
-        Mockito.when(mockedEmployeeIteratorFactory.getEmployeeIterator()).thenReturn(this.mockedEmployeeIterator);
-        Mockito.when(this.mockedEmployeeIterator.hasNext()).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);
+        Mockito.when(mockedEmployeeIteratorFactory.getEmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH))
+                .thenReturn(this.mockedEmployeeIterator);
+        Mockito.when(this.mockedEmployeeIterator.hasNext())
+                .thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);
     }
 
     @Test
