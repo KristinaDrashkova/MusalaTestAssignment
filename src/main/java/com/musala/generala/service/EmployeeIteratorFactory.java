@@ -12,7 +12,7 @@ public class EmployeeIteratorFactory {
             bufferedReader = new BufferedReader(new FileReader(path));
         } catch (FileNotFoundException e) {
             throw new IOException("Could not find file " + path +
-                    "\nOriginal exception message: " + e.getMessage());
+                    ", Original exception message: " + e.getMessage());
         }
         return new EmployeeIterator(bufferedReader);
     }
