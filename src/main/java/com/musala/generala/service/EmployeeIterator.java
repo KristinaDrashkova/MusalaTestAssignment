@@ -3,8 +3,6 @@ package com.musala.generala.service;
 import com.musala.generala.models.Employee;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.regex.Pattern;
@@ -14,13 +12,8 @@ public class EmployeeIterator implements Iterator<Employee> {
     private boolean isFinished = false;
     private BufferedReader bufferedReader;
 
-    public EmployeeIterator(String path) throws IOException {
-        try {
-            this.bufferedReader = new BufferedReader(new FileReader(path));
-        } catch (FileNotFoundException e) {
-            throw new IOException("Could not find file " + path +
-                    "\nOriginal exception message: " + e.getMessage());
-        }
+    public EmployeeIterator(BufferedReader bufferedReader) throws IOException {
+        this.bufferedReader = bufferedReader;
     }
 
     @Override
@@ -89,6 +82,6 @@ public class EmployeeIterator implements Iterator<Employee> {
     private void close() throws IOException {
         this.isFinished = true;
         this.cachedEmployee = null;
-        bufferedReader.close();
+        this.bufferedReader.close();
     }
 }

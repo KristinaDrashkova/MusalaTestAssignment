@@ -13,6 +13,7 @@ import java.util.HashMap;
 import static com.test.java.PredefinedEmployeeTestSubjects.*;
 
 public class EmployeeServiceTest {
+    private static final String RESOURCES_EMPLOYEE_DATA_PATH = "src/main/resources/employee data.txt";
     private static final double DELTA = 1e-15;
     private EmployeeService employeeService;
     private EmployeeIterator mockedEmployeeIterator;

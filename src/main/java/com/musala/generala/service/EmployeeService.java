@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 public class EmployeeService implements IEmployeeService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(EmployeeService.class);
-    private static final String RESOURCES_EMPLOYEE_DATA_PATH = "src/main/resources/employee data.txt";
     private EmployeeIteratorFactory employeeIteratorFactory;
 
     public EmployeeService(EmployeeIteratorFactory employeeIteratorFactory) {
