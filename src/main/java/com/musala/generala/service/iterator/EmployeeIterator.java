@@ -62,7 +62,9 @@ class EmployeeIterator implements Iterator<Employee> {
                 }
             }
             try {
-                this.cachedEmployee = new Employee(name, age, lengthOfService);
+                if (!(name.isEmpty() && age == 0 && lengthOfService == 0.0)) {
+                    this.cachedEmployee = new Employee(name, age, lengthOfService);
+                }
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
