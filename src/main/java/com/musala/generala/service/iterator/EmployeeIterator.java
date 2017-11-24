@@ -22,7 +22,7 @@ class EmployeeIterator implements Iterator<Employee> {
         } else if (this.isFinished) {
             return false;
         }
-        return true;
+        return !(this.isFinished && this.cachedEmployee == null);
     }
 
     @Override

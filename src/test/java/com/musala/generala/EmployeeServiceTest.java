@@ -1,26 +1,23 @@
-package com.test.java;
+package com.musala.generala;
 
 import com.musala.generala.service.iterator.EmployeeIteratorFactoryFromFile;
 import com.musala.generala.service.EmployeeService;
 import com.musala.generala.service.iterator.IEmployeeIteratorFactory;
-import org.apache.log4j.PropertyConfigurator;
 import org.junit.*;
 import org.mockito.Mockito;
 
 import java.io.*;
 import java.util.Iterator;
 
-import static com.test.java.PredefinedEmployeeTestSubjects.*;
+import static com.musala.generala.PredefinedEmployeeTestSubjects.*;
 
 public class EmployeeServiceTest {
-    private static final String RESOURCES_EMPLOYEE_DATA_PATH = "src/main/resources/employee data.txt";
     private static final double DELTA = 1e-15;
     private EmployeeService employeeService;
     private Iterator mockedEmployeeIterator;
 
     @Before
     public void initialize() throws IOException {
-        PropertyConfigurator.configure(CONFIG_FILENAME_TEST_PATH);
         this.mockedEmployeeIterator = Mockito.mock(Iterator.class);
         IEmployeeIteratorFactory mockedEmployeeIteratorFactory = Mockito.mock(EmployeeIteratorFactoryFromFile.class);
         this.employeeService = new EmployeeService(mockedEmployeeIteratorFactory);

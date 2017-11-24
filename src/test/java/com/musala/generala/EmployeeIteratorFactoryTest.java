@@ -1,4 +1,4 @@
-package com.test.java;
+package com.musala.generala;
 
 import com.musala.generala.service.iterator.EmployeeIteratorFactoryFromFile;
 import com.musala.generala.service.iterator.IEmployeeIteratorFactory;
