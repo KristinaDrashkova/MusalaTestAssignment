@@ -1,8 +1,8 @@
 package com.musala.generala.service;
 
 import com.musala.generala.exeptions.NoEmployeesException;
-import com.musala.generala.service.iterator.EmployeeIteratorFactory;
 import com.musala.generala.models.Employee;
+import com.musala.generala.service.iterator.IEmployeeIteratorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,15 +12,15 @@ import java.util.stream.Collectors;
 
 public class EmployeeService implements IEmployeeService {
     private final static Logger LOGGER = LoggerFactory.getLogger(EmployeeService.class);
-    private EmployeeIteratorFactory employeeIteratorFactory;
+    private IEmployeeIteratorFactory employeeIteratorFactory;
 
-    public EmployeeService(EmployeeIteratorFactory employeeIteratorFactory) {
+    public EmployeeService(IEmployeeIteratorFactory employeeIteratorFactory) {
         this.employeeIteratorFactory = employeeIteratorFactory;
     }
 
     @Override
-    public void logEmployeeInfo(String path) throws IOException {
-        Iterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(path);
+    public void logEmployeeInfo() throws IOException {
+        Iterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
         if (!employeeIterator.hasNext()) {
             try {
                 LOGGER.error("There are no employees");
@@ -29,10 +29,10 @@ public class EmployeeService implements IEmployeeService {
                 e.printStackTrace();
             }
         } else {
-            double averageAgeOfEmployees = averageAgeOfEmployees(path);
-            double averageLengthOfServiceOfEmployees = averageLengthOfServiceOfEmployees(path);
-            List<Character> mostCommonCharactersInEmployeesNames = mostCommonCharactersInEmployeesNames(path, 3);
-            double maximumLengthOfServiceOfEmployee = maximumLengthOfServiceOfEmployee(path);
+            double averageAgeOfEmployees = averageAgeOfEmployees();
+            double averageLengthOfServiceOfEmployees = averageLengthOfServiceOfEmployees();
+            List<Character> mostCommonCharactersInEmployeesNames = mostCommonCharactersInEmployeesNames(3);
+            double maximumLengthOfServiceOfEmployee = maximumLengthOfServiceOfEmployee();
             LOGGER.info("Average age of employees: {}", averageAgeOfEmployees);
             LOGGER.info("First three most common characters: {}", mostCommonCharactersInEmployeesNames.toString());
             LOGGER.info("Average length of service of the employees: {}", averageLengthOfServiceOfEmployees);
@@ -48,8 +48,8 @@ public class EmployeeService implements IEmployeeService {
      * @return calculated average age
      */
     @Override
-    public double averageAgeOfEmployees(String path) throws IOException {
-        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(path);
+    public double averageAgeOfEmployees() throws IOException {
+        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
         long employeeAgesSum = 0;
         double counter = 0.0;
         while (employeeIterator.hasNext()) {
@@ -67,8 +67,8 @@ public class EmployeeService implements IEmployeeService {
      * @return calculated average length of service
      */
     @Override
-    public double averageLengthOfServiceOfEmployees(String path) throws IOException {
-        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(path);
+    public double averageLengthOfServiceOfEmployees() throws IOException {
+        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
         double employeeLengthOfServiceSum = 0.0;
         double counter = 0.0;
         while (employeeIterator.hasNext()) {
@@ -87,8 +87,8 @@ public class EmployeeService implements IEmployeeService {
      * @return the maximum length of service
      */
     @Override
-    public double maximumLengthOfServiceOfEmployee(String path) throws IOException {
-        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(path);
+    public double maximumLengthOfServiceOfEmployee() throws IOException {
+        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
         double maxLengthOfService = 0;
         while (employeeIterator.hasNext()) {
             Employee employee = employeeIterator.next();
@@ -107,11 +107,11 @@ public class EmployeeService implements IEmployeeService {
      * from all the names
      */
     @Override
-    public List<Character> mostCommonCharactersInEmployeesNames(String path, int count) throws IOException {
-        if (count > countCharactersInEmployeeNames(path).size()) {
-            count = countCharactersInEmployeeNames(path).size();
+    public List<Character> mostCommonCharactersInEmployeesNames(int count) throws IOException {
+        if (count > countCharactersInEmployeeNames().size()) {
+            count = countCharactersInEmployeeNames().size();
         }
-        return countCharactersInEmployeeNames(path).entrySet().stream()
+        return countCharactersInEmployeeNames().entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .limit(count).map(Map.Entry::getKey).collect(Collectors.toList());
     }
@@ -125,8 +125,8 @@ public class EmployeeService implements IEmployeeService {
      * in all the names of all employees as a value
      * @see com.musala.generala.models.Employee
      */
-    private Map<Character, Integer> countCharactersInEmployeeNames(String path) throws IOException {
-        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(path);
+    private Map<Character, Integer> countCharactersInEmployeeNames() throws IOException {
+        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
         Map<Character, Integer> countCharactersInNames = new HashMap<>();
         while (employeeIterator.hasNext()) {
             Employee employee = employeeIterator.next();

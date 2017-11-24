@@ -8,8 +8,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
 
-public class EmployeeIteratorFactory {
-    public Iterator<Employee> getEmployeeIterator(String path) throws IOException {
+public class EmployeeIteratorFactoryFromFile implements IEmployeeIteratorFactory {
+    private String path;
+
+    public EmployeeIteratorFactoryFromFile(String path) {
+        this.path = path;
+    }
+
+    public Iterator<Employee> getEmployeeIterator() throws IOException {
         BufferedReader bufferedReader;
         try {
             bufferedReader = new BufferedReader(new FileReader(path));

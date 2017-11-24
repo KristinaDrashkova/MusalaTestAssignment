@@ -1,8 +1,9 @@
 package com.musala.generala;
 
-import com.musala.generala.service.iterator.EmployeeIteratorFactory;
+import com.musala.generala.service.iterator.EmployeeIteratorFactoryFromFile;
 import com.musala.generala.service.IEmployeeService;
 import com.musala.generala.service.EmployeeService;
+import com.musala.generala.service.iterator.IEmployeeIteratorFactory;
 import org.apache.log4j.PropertyConfigurator;
 
 import java.io.IOException;
@@ -14,8 +15,9 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         PropertyConfigurator.configure(CONFIG_FILENAME_PATH);
-        EmployeeIteratorFactory employeeIteratorFactory = new EmployeeIteratorFactory();
+        IEmployeeIteratorFactory employeeIteratorFactory =
+                new EmployeeIteratorFactoryFromFile(RESOURCES_EMPLOYEE_DATA_PATH);
         IEmployeeService employeeService = new EmployeeService(employeeIteratorFactory);
-        employeeService.logEmployeeInfo(RESOURCES_EMPLOYEE_DATA_PATH);
+        employeeService.logEmployeeInfo();
     }
 }

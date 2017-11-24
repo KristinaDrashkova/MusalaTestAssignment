@@ -1,7 +1,7 @@
 package com.test.java;
 
 import com.musala.generala.models.Employee;
-import com.musala.generala.service.iterator.EmployeeIteratorFactory;
+import com.musala.generala.service.iterator.EmployeeIteratorFactoryFromFile;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,13 +23,13 @@ public class EmployeeIteratorTest {
 
     @Test()
     public void hasNextShouldReturnFalseWithEmptyCollection() throws IOException {
-        Iterator<Employee> employeeIterator = new EmployeeIteratorFactory().getEmployeeIterator(EMPTY_FILE_PATH);
+        Iterator<Employee> employeeIterator = new EmployeeIteratorFactoryFromFile(EMPTY_FILE_PATH).getEmployeeIterator();
         Assert.assertEquals(false, employeeIterator.hasNext());
     }
 
     @Test
     public void hasNextAndNextShouldWorkCorrectly() throws IOException {
-        Iterator<Employee> employeeIterator = new EmployeeIteratorFactory().getEmployeeIterator(RESOURCES_EMPLOYEE_DATA_PATH);
+        Iterator<Employee> employeeIterator = new EmployeeIteratorFactoryFromFile(RESOURCES_EMPLOYEE_DATA_PATH).getEmployeeIterator();
         Assert.assertEquals(true, employeeIterator.hasNext());
         employeeIterator.next();
         Assert.assertEquals(true, employeeIterator.hasNext());

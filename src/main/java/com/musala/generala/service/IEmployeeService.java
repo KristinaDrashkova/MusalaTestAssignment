@@ -8,7 +8,7 @@ public interface IEmployeeService {
     /**
      * Logs the information about the employees
      */
-    void logEmployeeInfo(String path) throws IOException;
+    void logEmployeeInfo() throws IOException;
 
     /**
      * Returns the calculated average age
@@ -16,7 +16,7 @@ public interface IEmployeeService {
      *
      * @return calculated average age
      */
-    double averageAgeOfEmployees(String path) throws IOException;
+    double averageAgeOfEmployees() throws IOException;
 
     /**
      * Returns calculated average length of service
@@ -24,7 +24,7 @@ public interface IEmployeeService {
      *
      * @return calculated average length of service
      */
-    double averageLengthOfServiceOfEmployees(String path) throws IOException;
+    double averageLengthOfServiceOfEmployees() throws IOException;
 
     /**
      * Returns the maximum length of service
@@ -32,7 +32,7 @@ public interface IEmployeeService {
      *
      * @return the maximum length of service
      */
-    double maximumLengthOfServiceOfEmployee(String path) throws IOException;
+    double maximumLengthOfServiceOfEmployee() throws IOException;
 
     /**
      * Returns list of the first three most common characters
@@ -41,5 +41,5 @@ public interface IEmployeeService {
      * @return list of the first three most common characters
      * from all the names
      */
-    List<Character> mostCommonCharactersInEmployeesNames(String path, int count) throws IOException;
+    List<Character> mostCommonCharactersInEmployeesNames(int count) throws IOException;
 }
