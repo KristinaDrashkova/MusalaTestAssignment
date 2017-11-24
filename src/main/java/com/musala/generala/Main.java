@@ -5,7 +5,6 @@ import com.musala.generala.service.IEmployeeService;
 import com.musala.generala.service.EmployeeService;
 import com.musala.generala.service.iterator.IEmployeeIteratorFactory;
 import org.apache.log4j.PropertyConfigurator;
-
 import java.io.IOException;
 
 

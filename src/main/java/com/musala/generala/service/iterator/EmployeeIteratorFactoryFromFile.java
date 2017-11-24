@@ -1,9 +1,7 @@
 package com.musala.generala.service.iterator;
 
 import com.musala.generala.models.Employee;
-
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
@@ -19,7 +17,7 @@ public class EmployeeIteratorFactoryFromFile implements IEmployeeIteratorFactory
         BufferedReader bufferedReader;
         try {
             bufferedReader = new BufferedReader(new FileReader(path));
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new IOException("Could not find file " + path +
                     ", Original exception message: " + e.getMessage());
         }

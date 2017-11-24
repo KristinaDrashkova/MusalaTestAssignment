@@ -5,7 +5,6 @@ import com.musala.generala.models.Employee;
 import com.musala.generala.service.iterator.IEmployeeIteratorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -123,7 +122,6 @@ public class EmployeeService implements IEmployeeService {
      *
      * @return collection with character for a key and its occurrence
      * in all the names of all employees as a value
-     * @see com.musala.generala.models.Employee
      */
     private Map<Character, Integer> countCharactersInEmployeeNames() throws IOException {
         Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
