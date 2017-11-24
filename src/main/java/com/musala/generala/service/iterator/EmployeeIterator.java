@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.regex.Pattern;
 
 class EmployeeIterator implements Iterator<Employee> {
     private Employee cachedEmployee;
@@ -46,7 +45,7 @@ class EmployeeIterator implements Iterator<Employee> {
             int age = 0;
             double lengthOfService = 0.0;
             while ((line = this.bufferedReader.readLine()) != null && !line.trim().equals("<<>>")) {
-                String[] lineData = line.split(Pattern.quote("="));
+                String[] lineData = line.split("=");
                 String key = lineData[0];
                 String value = lineData.length == 1 ? "" : lineData[1];
                 switch (key) {
