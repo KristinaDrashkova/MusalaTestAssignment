@@ -1,6 +1,8 @@
 package com.musala.generala.service.iterator;
 
 import com.musala.generala.models.Employee;
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Iterator;
@@ -22,12 +24,12 @@ class EmployeeIterator implements Iterator<Employee> {
         } else if (this.isFinished) {
             return false;
         }
+        parse();
         return !(this.isFinished && this.cachedEmployee == null);
     }
 
     @Override
     public Employee next() {
-        parse();
         return nextEmployee();
     }
 
@@ -61,7 +63,7 @@ class EmployeeIterator implements Iterator<Employee> {
                 }
             }
             try {
-                if (!(name.isEmpty() && age == 0 && lengthOfService == 0.0)) {
+                if (!(StringUtils.isBlank(name) && age == 0 && lengthOfService == 0.0)) {
                     this.cachedEmployee = new Employee(name, age, lengthOfService);
                 }
             } catch (IllegalArgumentException e) {

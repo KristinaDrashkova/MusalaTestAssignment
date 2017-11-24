@@ -1,5 +1,7 @@
 package com.musala.generala.service;
 
+import com.musala.generala.exeptions.NoEmployeesException;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -8,7 +10,7 @@ public interface IEmployeeService {
     /**
      * Logs the information about the employees
      */
-    void logEmployeeInfo() throws IOException;
+    void logEmployeeInfo() throws IOException, NoEmployeesException;
 
     /**
      * Returns the calculated average age

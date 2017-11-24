@@ -5,6 +5,7 @@ import com.musala.generala.models.Employee;
 import com.musala.generala.service.iterator.IEmployeeIteratorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,15 +19,11 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public void logEmployeeInfo() throws IOException {
+    public void logEmployeeInfo() throws IOException, NoEmployeesException {
         Iterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
         if (!employeeIterator.hasNext()) {
-            try {
-                LOGGER.error("There are no employees");
-                throw new NoEmployeesException("There are no employees");
-            } catch (NoEmployeesException e) {
-                e.printStackTrace();
-            }
+            LOGGER.error("There are no employees");
+            throw new NoEmployeesException("There are no employees");
         } else {
             double averageAgeOfEmployees = averageAgeOfEmployees();
             double averageLengthOfServiceOfEmployees = averageLengthOfServiceOfEmployees();
@@ -38,7 +35,6 @@ public class EmployeeService implements IEmployeeService {
             LOGGER.info("Maximum length of service among all employees: {}", maximumLengthOfServiceOfEmployee);
         }
     }
-
 
     /**
      * Returns the calculated average age
