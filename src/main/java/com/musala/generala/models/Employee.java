@@ -2,6 +2,7 @@ package com.musala.generala.models;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.StringUtils;
 
 
 public class Employee {
@@ -21,7 +22,7 @@ public class Employee {
     }
 
     private void setName(String name) {
-        if (name.isEmpty()) {
+        if (StringUtils.isBlank(name)) {
             LOGGER.error("Illegal employee name: {}", name);
             throw new IllegalArgumentException("Illegal employee name: " + name);
         }
