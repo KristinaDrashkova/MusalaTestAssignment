@@ -23,12 +23,12 @@ class EmployeeIterator implements Iterator<Employee> {
         } else if (this.isFinished) {
             return false;
         }
-        parse();
-        return !(this.isFinished && this.cachedEmployee == null);
+        return true;
     }
 
     @Override
     public Employee next() {
+        parse();
         return nextEmployee();
     }
 
