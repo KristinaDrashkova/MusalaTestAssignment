@@ -33,7 +33,7 @@ public class EmployeeServiceTest {
     @Test
     public void averageAgeOfEmployeesShouldCalculateCorrectWithNormalInputData() throws IOException {
         Mockito.when(this.mockedEmployeeIterator.next()).thenReturn(NORA).thenReturn(NORMAN).thenReturn(NORBERT);
-        Assert.assertEquals(20, this.employeeService.averageAgeOfEmployees(RESOURCES_EMPLOYEE_DATA_PATH),DELTA);
+        Assert.assertEquals(20, this.employeeService.averageAgeOfEmployees(RESOURCES_EMPLOYEE_DATA_PATH), DELTA);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class EmployeeServiceTest {
         Mockito.when(this.mockedEmployeeIterator.next())
                 .thenReturn(MAXIMILIAN).thenReturn(MAXIMILIAN).thenReturn(MAXIMILIAN);
         Assert.assertEquals(Integer.MAX_VALUE,
-                this.employeeService.averageAgeOfEmployees(RESOURCES_EMPLOYEE_DATA_PATH),DELTA);
+                this.employeeService.averageAgeOfEmployees(RESOURCES_EMPLOYEE_DATA_PATH), DELTA);
     }
 
 
@@ -49,7 +49,7 @@ public class EmployeeServiceTest {
     public void averageLengthOfServiceOfEmployeesShouldCalculateCorrect() throws IOException {
         Mockito.when(this.mockedEmployeeIterator.next()).thenReturn(NORA).thenReturn(NORMAN).thenReturn(NORBERT);
         Assert.assertEquals(20.2,
-                this.employeeService.averageLengthOfServiceOfEmployees(RESOURCES_EMPLOYEE_DATA_PATH),DELTA);
+                this.employeeService.averageLengthOfServiceOfEmployees(RESOURCES_EMPLOYEE_DATA_PATH), DELTA);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class EmployeeServiceTest {
         Mockito.when(this.mockedEmployeeIterator.next())
                 .thenReturn(MAXIMILIAN).thenReturn(MAXIMILIAN).thenReturn(MAXIMILIAN);
         Assert.assertEquals(Double.POSITIVE_INFINITY,
-                this.employeeService.averageLengthOfServiceOfEmployees(RESOURCES_EMPLOYEE_DATA_PATH),DELTA);
+                this.employeeService.averageLengthOfServiceOfEmployees(RESOURCES_EMPLOYEE_DATA_PATH), DELTA);
     }
 
 
@@ -81,19 +81,6 @@ public class EmployeeServiceTest {
         Mockito.when(this.mockedEmployeeIterator.next()).thenReturn(NORA).thenReturn(NORMAN).thenReturn(NORBERT);
         Assert.assertArrayEquals(new Character[]{'a', 'b', 'f'},
                 this.employeeService
-                        .mostCommonCharactersInEmployeesNames(RESOURCES_EMPLOYEE_DATA_PATH).toArray(new Character[3]));
-    }
-
-    @Test
-    public void fillEmployeeNamesInToMapShouldWorkCorrect() throws IOException {
-        Mockito.when(this.mockedEmployeeIterator.next())
-                .thenReturn(MAXIMILIAN).thenReturn(MAXIMILIAN).thenReturn(MAXIMILIAN);
-        HashMap<Character, Integer> charactersInNames =
-                this.employeeService.countCharactersInEmployeeNames(RESOURCES_EMPLOYEE_DATA_PATH);
-        Assert.assertTrue(charactersInNames.get(' ') == 6);
-        Assert.assertTrue(charactersInNames.get('a') == 3);
-        Assert.assertTrue(charactersInNames.get('b') == 3);
-        Assert.assertTrue(charactersInNames.get('c') == 3);
-        Assert.assertTrue(charactersInNames.size() == 4);
+                        .mostCommonCharactersInEmployeesNames(RESOURCES_EMPLOYEE_DATA_PATH, 3).toArray(new Character[3]));
     }
 }

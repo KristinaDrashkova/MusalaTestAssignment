@@ -16,6 +16,6 @@ public class Main {
         PropertyConfigurator.configure(CONFIG_FILENAME_PATH);
         EmployeeIteratorFactory employeeIteratorFactory = new EmployeeIteratorFactory();
         IEmployeeService employeeService = new EmployeeService(employeeIteratorFactory);
-        employeeService.getEmployeeInfo(RESOURCES_EMPLOYEE_DATA_PATH);
+        employeeService.logEmployeeInfo(RESOURCES_EMPLOYEE_DATA_PATH);
     }
 }

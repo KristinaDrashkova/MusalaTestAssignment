@@ -19,6 +19,7 @@ public class EmployeeTest {
         this.thrown.expect(IllegalArgumentException.class);
         this.thrown.reportMissingExceptionWithMessage("Exception expected");
     }
+
     @Test
     public void createEmployeeWithInvalidNameShouldThrowException() {
         this.thrown.expectMessage("Illegal employee name: ");

@@ -10,10 +10,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Class that does most of the business logic in the project
- * for more information check the methods documentation
- */
 public class EmployeeService implements IEmployeeService {
     private final static Logger LOGGER = LoggerFactory.getLogger(EmployeeService.class);
     private EmployeeIteratorFactory employeeIteratorFactory;
@@ -23,7 +19,7 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public void getEmployeeInfo(String path) throws IOException {
+    public void logEmployeeInfo(String path) throws IOException {
         Iterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(path);
         if (!employeeIterator.hasNext()) {
             try {
@@ -33,23 +29,23 @@ public class EmployeeService implements IEmployeeService {
                 e.printStackTrace();
             }
         } else {
-            LOGGER.info("Average age of employees: {}", this.averageAgeOfEmployees(path) + "");
-            LOGGER.info("First three most common characters: {}"
-                    , this.mostCommonCharactersInEmployeesNames(path).toString());
-            LOGGER.info("Average length of service of the employees: {}"
-                    , this.averageLengthOfServiceOfEmployees(path) + "");
-            LOGGER.info("Maximum length of service among all employees: {}"
-                    , this.maximumLengthOfServiceOfEmployee(path) + "");
+            double averageAgeOfEmployees = averageAgeOfEmployees(path);
+            double averageLengthOfServiceOfEmployees = averageLengthOfServiceOfEmployees(path);
+            List<Character> mostCommonCharactersInEmployeesNames = mostCommonCharactersInEmployeesNames(path, 3);
+            double maximumLengthOfServiceOfEmployee = maximumLengthOfServiceOfEmployee(path);
+            LOGGER.info("Average age of employees: {}", averageAgeOfEmployees);
+            LOGGER.info("First three most common characters: {}", mostCommonCharactersInEmployeesNames.toString());
+            LOGGER.info("Average length of service of the employees: {}", averageLengthOfServiceOfEmployees);
+            LOGGER.info("Maximum length of service among all employees: {}", maximumLengthOfServiceOfEmployee);
         }
     }
 
 
     /**
      * Returns the calculated average age
-     * from all the Employee in the EmployeeRepository
+     * from all the employees
      *
      * @return calculated average age
-     * @see com.musala.generala.models.Employee
      */
     @Override
     public double averageAgeOfEmployees(String path) throws IOException {
@@ -66,10 +62,9 @@ public class EmployeeService implements IEmployeeService {
 
     /**
      * Returns calculated average length of service
-     * from all the Employee in the EmployeeRepository
+     * from all the employees
      *
      * @return calculated average length of service
-     * @see com.musala.generala.models.Employee
      */
     @Override
     public double averageLengthOfServiceOfEmployees(String path) throws IOException {
@@ -87,10 +82,9 @@ public class EmployeeService implements IEmployeeService {
 
     /**
      * Returns the maximum length of service
-     * from all the Employee in the EmployeeRepository
+     * from all the employees
      *
      * @return the maximum length of service
-     * @see com.musala.generala.models.Employee
      */
     @Override
     public double maximumLengthOfServiceOfEmployee(String path) throws IOException {
@@ -107,32 +101,33 @@ public class EmployeeService implements IEmployeeService {
 
     /**
      * Returns list of the first three most common characters
-     * from all the names of all the Employee in the EmployeeRepository
+     * from all the names of all the employee names
      *
      * @return list of the first three most common characters
      * from all the names
-     * @see com.musala.generala.models.Employee
      */
     @Override
-    public List<Character> mostCommonCharactersInEmployeesNames(String path) throws IOException {
+    public List<Character> mostCommonCharactersInEmployeesNames(String path, int count) throws IOException {
+        if (count > countCharactersInEmployeeNames(path).size()) {
+            count = countCharactersInEmployeeNames(path).size();
+        }
         return countCharactersInEmployeeNames(path).entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .limit(3).map(Map.Entry::getKey).collect(Collectors.toList());
+                .limit(count).map(Map.Entry::getKey).collect(Collectors.toList());
     }
 
     /**
-     * Returns HashMap from all the characters
-     * in the names of the all Employee in the EmployeeRepository
+     * Returns collection from all the characters
+     * in the names of the all employees
      * with the number of their occurrences as a value
      *
-     * @return HasMap with character for a key and its occurrence
-     * in all the names of all the Employee in the EmployeeRepository as a value
+     * @return collection with character for a key and its occurrence
+     * in all the names of all employees as a value
      * @see com.musala.generala.models.Employee
      */
-    @Override
-    public HashMap<Character, Integer> countCharactersInEmployeeNames(String path) throws IOException {
+    private Map<Character, Integer> countCharactersInEmployeeNames(String path) throws IOException {
         Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator(path);
-        HashMap<Character, Integer> countCharactersInNames = new LinkedHashMap<>();
+        Map<Character, Integer> countCharactersInNames = new HashMap<>();
         while (employeeIterator.hasNext()) {
             Employee employee = employeeIterator.next();
             for (char c : employee.getName().toLowerCase().toCharArray()) {

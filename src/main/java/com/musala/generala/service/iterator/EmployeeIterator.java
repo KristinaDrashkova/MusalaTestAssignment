@@ -47,15 +47,15 @@ class EmployeeIterator implements Iterator<Employee> {
             while ((line = this.bufferedReader.readLine()) != null && !line.trim().equals("<<>>")) {
                 String[] lineData = line.split(Pattern.quote("="));
                 String key = lineData[0];
-                String value = lineData.length == 1? "" : lineData[1];
+                String value = lineData.length == 1 ? "" : lineData[1];
                 switch (key) {
-                    case "name" :
+                    case "name":
                         name = value.trim();
                         break;
-                    case "age" :
+                    case "age":
                         age = Integer.parseInt(value.trim());
                         break;
-                    case "lengthOfService" : {
+                    case "lengthOfService": {
                         lengthOfService = Double.parseDouble(value.trim());
                         break;
                     }
@@ -69,7 +69,7 @@ class EmployeeIterator implements Iterator<Employee> {
             if (line == null) {
                 this.isFinished = true;
             }
-        } catch(IOException ioe) {
+        } catch (IOException ioe) {
             try {
                 close();
             } catch (IOException e) {
