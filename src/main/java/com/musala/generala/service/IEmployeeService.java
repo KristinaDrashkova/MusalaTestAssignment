@@ -18,7 +18,7 @@ public interface IEmployeeService {
      *
      * @return calculated average age
      */
-    double averageAgeOfEmployees() throws IOException;
+    double averageAgeOfEmployees() throws IOException, NoEmployeesException;
 
     /**
      * Returns calculated average length of service
@@ -26,7 +26,7 @@ public interface IEmployeeService {
      *
      * @return calculated average length of service
      */
-    double averageLengthOfServiceOfEmployees() throws IOException;
+    double averageLengthOfServiceOfEmployees() throws IOException, NoEmployeesException;
 
     /**
      * Returns the maximum length of service

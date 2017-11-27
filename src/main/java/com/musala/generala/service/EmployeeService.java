@@ -43,7 +43,7 @@ public class EmployeeService implements IEmployeeService {
      * @return calculated average age
      */
     @Override
-    public double averageAgeOfEmployees() throws IOException {
+    public double averageAgeOfEmployees() throws IOException, NoEmployeesException {
         Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
         long employeeAgesSum = 0;
         double counter = 0.0;
@@ -52,7 +52,10 @@ public class EmployeeService implements IEmployeeService {
             employeeAgesSum += employee.getAge();
             counter++;
         }
-        return employeeAgesSum / counter;
+        if (counter > 0.0) {
+            return employeeAgesSum / counter;
+        }
+        throw new NoEmployeesException("There are no employees");
     }
 
     /**
@@ -62,7 +65,7 @@ public class EmployeeService implements IEmployeeService {
      * @return calculated average length of service
      */
     @Override
-    public double averageLengthOfServiceOfEmployees() throws IOException {
+    public double averageLengthOfServiceOfEmployees() throws IOException, NoEmployeesException {
         Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
         double employeeLengthOfServiceSum = 0.0;
         double counter = 0.0;
@@ -71,8 +74,10 @@ public class EmployeeService implements IEmployeeService {
             employeeLengthOfServiceSum += employee.getLengthOfService();
             counter++;
         }
-
-        return employeeLengthOfServiceSum / counter;
+        if (counter > 0.0) {
+            return employeeLengthOfServiceSum / counter;
+        }
+        throw new NoEmployeesException("There are no employees");
     }
 
     /**
