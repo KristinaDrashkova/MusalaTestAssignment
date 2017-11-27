@@ -33,6 +33,12 @@ class EmployeeIterator implements Iterator<Employee> {
     }
 
     private Employee nextEmployee() {
+        while (this.cachedEmployee == null) {
+            if (this.isFinished) {
+                break;
+            }
+            parse();
+        }
         Employee currentEmployee = this.cachedEmployee;
         this.cachedEmployee = null;
         return currentEmployee;
