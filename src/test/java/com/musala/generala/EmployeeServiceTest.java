@@ -1,5 +1,6 @@
 package com.musala.generala;
 
+import com.musala.generala.exeptions.NoEmployeesException;
 import com.musala.generala.service.iterator.EmployeeIteratorFactoryFromFile;
 import com.musala.generala.service.EmployeeService;
 import com.musala.generala.service.iterator.IEmployeeIteratorFactory;
@@ -28,13 +29,13 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    public void averageAgeOfEmployeesShouldCalculateCorrectWithNormalInputData() throws IOException {
+    public void averageAgeOfEmployeesShouldCalculateCorrectWithNormalInputData() throws IOException, NoEmployeesException {
         Mockito.when(this.mockedEmployeeIterator.next()).thenReturn(NORA).thenReturn(NORMAN).thenReturn(NORBERT);
         Assert.assertEquals(20, this.employeeService.averageAgeOfEmployees(), DELTA);
     }
 
     @Test
-    public void averageAgeOfEmployeeShouldCalculateCorrectWithCornerCaseMaxValue() throws IOException {
+    public void averageAgeOfEmployeeShouldCalculateCorrectWithCornerCaseMaxValue() throws IOException, NoEmployeesException {
         Mockito.when(this.mockedEmployeeIterator.next())
                 .thenReturn(MAXIMILIAN).thenReturn(MAXIMILIAN).thenReturn(MAXIMILIAN);
         Assert.assertEquals(Integer.MAX_VALUE,
@@ -43,14 +44,14 @@ public class EmployeeServiceTest {
 
 
     @Test
-    public void averageLengthOfServiceOfEmployeesShouldCalculateCorrect() throws IOException {
+    public void averageLengthOfServiceOfEmployeesShouldCalculateCorrect() throws IOException, NoEmployeesException {
         Mockito.when(this.mockedEmployeeIterator.next()).thenReturn(NORA).thenReturn(NORMAN).thenReturn(NORBERT);
         Assert.assertEquals(20.2,
                 this.employeeService.averageLengthOfServiceOfEmployees(), DELTA);
     }
 
     @Test
-    public void averageLengthOfServiceOfEmployeesShouldOverflowWithCornerMaxValues() throws IOException {
+    public void averageLengthOfServiceOfEmployeesShouldOverflowWithCornerMaxValues() throws IOException, NoEmployeesException {
         Mockito.when(this.mockedEmployeeIterator.next())
                 .thenReturn(MAXIMILIAN).thenReturn(MAXIMILIAN).thenReturn(MAXIMILIAN);
         Assert.assertEquals(Double.POSITIVE_INFINITY,
