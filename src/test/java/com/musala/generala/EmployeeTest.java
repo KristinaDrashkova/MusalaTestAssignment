@@ -1,7 +1,6 @@
 package com.musala.generala;
 
 import com.musala.generala.models.Employee;
-import org.apache.log4j.PropertyConfigurator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

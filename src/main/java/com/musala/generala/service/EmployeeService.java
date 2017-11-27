@@ -5,6 +5,7 @@ import com.musala.generala.models.Employee;
 import com.musala.generala.service.iterator.IEmployeeIteratorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,7 +20,7 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public void logEmployeeInfo() throws IOException, NoEmployeesException {
-        Iterator employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
+        Iterator employeeIterator = this.employeeIteratorFactory.createEmployeeIterator();
         if (!employeeIterator.hasNext()) {
             LOGGER.error("There are no employees");
             throw new NoEmployeesException("There are no employees");
@@ -43,7 +44,10 @@ public class EmployeeService implements IEmployeeService {
      */
     @Override
     public double averageAgeOfEmployees() throws IOException, NoEmployeesException {
-        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
+        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.createEmployeeIterator();
+        if (!validateEmployeeIterator(employeeIterator)) {
+            throw new NoEmployeesException("There are no employees");
+        }
         long employeeAgesSum = 0;
         double counter = 0.0;
         while (employeeIterator.hasNext()) {
@@ -51,10 +55,7 @@ public class EmployeeService implements IEmployeeService {
             employeeAgesSum += employee.getAge();
             counter++;
         }
-        if (counter > 0.0) {
-            return employeeAgesSum / counter;
-        }
-        throw new NoEmployeesException("There are no employees");
+        return employeeAgesSum / counter;
     }
 
     /**
@@ -65,7 +66,10 @@ public class EmployeeService implements IEmployeeService {
      */
     @Override
     public double averageLengthOfServiceOfEmployees() throws IOException, NoEmployeesException {
-        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
+        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.createEmployeeIterator();
+        if (!validateEmployeeIterator(employeeIterator)) {
+            throw new NoEmployeesException("There are no employees");
+        }
         double employeeLengthOfServiceSum = 0.0;
         double counter = 0.0;
         while (employeeIterator.hasNext()) {
@@ -73,10 +77,7 @@ public class EmployeeService implements IEmployeeService {
             employeeLengthOfServiceSum += employee.getLengthOfService();
             counter++;
         }
-        if (counter > 0.0) {
-            return employeeLengthOfServiceSum / counter;
-        }
-        throw new NoEmployeesException("There are no employees");
+        return employeeLengthOfServiceSum / counter;
     }
 
     /**
@@ -87,7 +88,7 @@ public class EmployeeService implements IEmployeeService {
      */
     @Override
     public double maximumLengthOfServiceOfEmployee() throws IOException {
-        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
+        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.createEmployeeIterator();
         double maxLengthOfService = 0;
         while (employeeIterator.hasNext()) {
             Employee employee = employeeIterator.next();
@@ -124,7 +125,7 @@ public class EmployeeService implements IEmployeeService {
      * in all the names of all employees as a value
      */
     private Map<Character, Integer> countCharactersInEmployeeNames() throws IOException {
-        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.getEmployeeIterator();
+        Iterator<Employee> employeeIterator = this.employeeIteratorFactory.createEmployeeIterator();
         Map<Character, Integer> countCharactersInNames = new HashMap<>();
         while (employeeIterator.hasNext()) {
             Employee employee = employeeIterator.next();
@@ -139,5 +140,9 @@ public class EmployeeService implements IEmployeeService {
         }
 
         return countCharactersInNames;
+    }
+
+    private boolean validateEmployeeIterator(Iterator<Employee> employeeIterator) {
+        return employeeIterator.hasNext();
     }
 }

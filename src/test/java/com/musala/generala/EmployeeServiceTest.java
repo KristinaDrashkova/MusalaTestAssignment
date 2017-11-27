@@ -6,10 +6,8 @@ import com.musala.generala.service.EmployeeService;
 import com.musala.generala.service.iterator.IEmployeeIteratorFactory;
 import org.junit.*;
 import org.mockito.Mockito;
-
 import java.io.*;
 import java.util.Iterator;
-
 import static com.musala.generala.PredefinedEmployeeTestSubjects.*;
 
 public class EmployeeServiceTest {
@@ -22,7 +20,7 @@ public class EmployeeServiceTest {
         this.mockedEmployeeIterator = Mockito.mock(Iterator.class);
         IEmployeeIteratorFactory mockedEmployeeIteratorFactory = Mockito.mock(EmployeeIteratorFactoryFromFile.class);
         this.employeeService = new EmployeeService(mockedEmployeeIteratorFactory);
-        Mockito.when(mockedEmployeeIteratorFactory.getEmployeeIterator())
+        Mockito.when(mockedEmployeeIteratorFactory.createEmployeeIterator())
                 .thenReturn(this.mockedEmployeeIterator);
         Mockito.when(this.mockedEmployeeIterator.hasNext())
                 .thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);

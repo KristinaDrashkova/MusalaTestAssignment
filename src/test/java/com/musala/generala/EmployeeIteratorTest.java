@@ -14,13 +14,13 @@ public class EmployeeIteratorTest {
 
     @Test()
     public void hasNextShouldReturnFalseWithEmptyCollection() throws IOException {
-        Iterator<Employee> employeeIterator = new EmployeeIteratorFactoryFromFile(EMPTY_FILE_PATH).getEmployeeIterator();
+        Iterator<Employee> employeeIterator = new EmployeeIteratorFactoryFromFile(EMPTY_FILE_PATH).createEmployeeIterator();
         Assert.assertEquals(false, employeeIterator.hasNext());
     }
 
     @Test
     public void hasNextAndNextShouldWorkCorrectly() throws IOException {
-        Iterator<Employee> employeeIterator = new EmployeeIteratorFactoryFromFile(RESOURCES_EMPLOYEE_DATA_PATH).getEmployeeIterator();
+        Iterator<Employee> employeeIterator = new EmployeeIteratorFactoryFromFile(RESOURCES_EMPLOYEE_DATA_PATH).createEmployeeIterator();
         Assert.assertEquals(true, employeeIterator.hasNext());
         employeeIterator.next();
         Assert.assertEquals(true, employeeIterator.hasNext());

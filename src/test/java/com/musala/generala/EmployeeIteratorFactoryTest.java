@@ -18,7 +18,7 @@ public class EmployeeIteratorFactoryTest {
     @Test(expected = IOException.class)
     public void getEmployeeIteratorShouldThrowExceptionWithInvalidPath() throws Exception {
         IEmployeeIteratorFactory employeeIteratorFactory = new EmployeeIteratorFactoryFromFile(INVALID_PATH);
-        employeeIteratorFactory.getEmployeeIterator();
+        employeeIteratorFactory.createEmployeeIterator();
         this.thrown.expect(IOException.class);
         this.thrown.reportMissingExceptionWithMessage("Exception expected");
         this.thrown.expectMessage("Could not find file " + INVALID_PATH +
