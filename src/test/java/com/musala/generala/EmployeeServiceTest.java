@@ -28,7 +28,7 @@ public class EmployeeServiceTest {
 
     @Test
     public void averageAgeOfEmployeesShouldCalculateCorrectWithNormalInputData() throws IOException, NoEmployeesException {
-        Mockito.when(this.mockedEmployeeIterator.next()).thenReturn(NORA).thenReturn(NORMAN).thenReturn(NORBERT);
+        Mockito.when(this.mockedEmployeeIterator.next()).thenReturn(NORBERT).thenReturn(NORMAN).thenReturn(NORA);
         Assert.assertEquals(20, this.employeeService.averageAgeOfEmployees(), DELTA);
     }
 
@@ -76,7 +76,6 @@ public class EmployeeServiceTest {
     public void mostCommonCharactersInEmployeesNamesShouldWorkCorrect() throws IOException {
         Mockito.when(this.mockedEmployeeIterator.next()).thenReturn(NORA).thenReturn(NORMAN).thenReturn(NORBERT);
         Assert.assertArrayEquals(new Character[]{'a', 'b', 'f'},
-                this.employeeService
-                        .mostCommonCharactersInEmployeesNames(3).toArray(new Character[3]));
+                this.employeeService.mostCommonCharactersInEmployeesNames(3).toArray(new Character[3]));
     }
 }

@@ -9,8 +9,8 @@ import java.util.Iterator;
 
 
 public class EmployeeIteratorTest {
-    private static final String RESOURCES_EMPLOYEE_DATA_PATH = "src/main/resources/employee data.txt";
-    private static final String EMPTY_FILE_PATH = "src/main/java/com/test/resources/empty file.txt";
+    private static final String RESOURCES_EMPLOYEE_DATA_PATH = "src\\main\\resources\\employee data.txt";
+    private static final String EMPTY_FILE_PATH = "src\\test\\resources\\empty file.txt";
 
     @Test()
     public void hasNextShouldReturnFalseWithEmptyCollection() throws IOException {
