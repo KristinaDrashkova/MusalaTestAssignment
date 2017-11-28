@@ -6,9 +6,8 @@ import org.apache.commons.io.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.Iterator;
+import java.io.*;
+import java.util.*;
 
 class EmployeeIterator implements Iterator<Employee> {
     private final static Logger LOGGER = LoggerFactory.getLogger(EmployeeIterator.class);
@@ -49,7 +48,8 @@ class EmployeeIterator implements Iterator<Employee> {
     private void parseEmployee() {
         try {
             String line;
-            while ((line = this.bufferedReader.readLine()) != null && !line.trim().equals("<<>>")) {
+            String employeeSeparator = getEmployeeSeparator();
+            while ((line = this.bufferedReader.readLine()) != null && !line.trim().equals(employeeSeparator)) {
                 parseLine(line);
             }
             try {
@@ -67,8 +67,9 @@ class EmployeeIterator implements Iterator<Employee> {
         }
     }
 
-    private void parseLine(String line) {
-        String[] lineData = line.split("=");
+    private void parseLine(String line) throws IOException {
+        String fieldSeparator = getFieldSeparator();
+        String[] lineData = line.split(fieldSeparator);
         String key = lineData[0];
         String value = lineData.length == 1 ? "" : lineData[1];
         switch (key) {
@@ -93,5 +94,39 @@ class EmployeeIterator implements Iterator<Employee> {
         this.isFinished = true;
         this.cachedEmployee = null;
         IOUtils.closeQuietly(this.bufferedReader);
+    }
+
+    private String getEmployeeSeparator() throws IOException {
+        Map<String, String> data = getDataFromSeparatorPropertiesFile();
+        return data.get("employeeSeparator");
+    }
+
+    private String getFieldSeparator() throws IOException {
+        Map<String, String> data = getDataFromSeparatorPropertiesFile();
+        return data.get("fieldSeparator");
+    }
+
+    private Map<String, String> getDataFromSeparatorPropertiesFile() throws IOException {
+        Map<String, String> separatorPropertiesData = new HashMap<>();
+        String path = "src/main/resources/separators.properties";
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(path));
+            Properties properties = new Properties();
+            properties.load(reader);
+            Enumeration enuKeys = properties.keys();
+            while (enuKeys.hasMoreElements()) {
+                String key = (String) enuKeys.nextElement();
+                String value = properties.getProperty(key);
+                separatorPropertiesData.put(key, value);
+            }
+        } catch (FileNotFoundException e) {
+            LOGGER.error("There is no such file: {}", path);
+            throw e;
+        } catch (IOException e) {
+            LOGGER.error("There was problem loading the file: {}", path);
+            throw e;
+        }
+
+        return separatorPropertiesData;
     }
 }
