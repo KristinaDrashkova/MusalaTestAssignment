@@ -108,10 +108,11 @@ public class EmployeeService implements IEmployeeService {
      */
     @Override
     public List<Character> mostCommonCharactersInEmployeesNames(int count) throws IOException {
-        if (count > countCharactersInEmployeeNames().size()) {
-            count = countCharactersInEmployeeNames().size();
+        Map<Character, Integer> characterIntegerMap = countCharactersInEmployeeNames();
+        if (count > characterIntegerMap.size()) {
+            count = characterIntegerMap.size();
         }
-        return countCharactersInEmployeeNames().entrySet().stream()
+        return characterIntegerMap.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .limit(count).map(Map.Entry::getKey).collect(Collectors.toList());
     }

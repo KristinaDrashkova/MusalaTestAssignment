@@ -15,6 +15,7 @@ public class EmployeeServiceTest {
     private EmployeeService employeeService;
     private Iterator mockedEmployeeIterator;
 
+    @SuppressWarnings("unchecked")
     @Before
     public void initialize() throws IOException {
         this.mockedEmployeeIterator = Mockito.mock(Iterator.class);
@@ -23,12 +24,12 @@ public class EmployeeServiceTest {
         Mockito.when(mockedEmployeeIteratorFactory.createEmployeeIterator())
                 .thenReturn(this.mockedEmployeeIterator);
         Mockito.when(this.mockedEmployeeIterator.hasNext())
-                .thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);
+                .thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);
     }
 
     @Test
     public void averageAgeOfEmployeesShouldCalculateCorrectWithNormalInputData() throws IOException, NoEmployeesException {
-        Mockito.when(this.mockedEmployeeIterator.next()).thenReturn(NORBERT).thenReturn(NORMAN).thenReturn(NORA);
+        Mockito.when(this.mockedEmployeeIterator.next()).thenReturn(NORA).thenReturn(NORMAN).thenReturn(NORBERT);
         Assert.assertEquals(20, this.employeeService.averageAgeOfEmployees(), DELTA);
     }
 
@@ -74,6 +75,8 @@ public class EmployeeServiceTest {
 
     @Test
     public void mostCommonCharactersInEmployeesNamesShouldWorkCorrect() throws IOException {
+        Mockito.when(this.mockedEmployeeIterator.hasNext())
+                .thenReturn(true).thenReturn(true).thenReturn(true).thenReturn(false);
         Mockito.when(this.mockedEmployeeIterator.next()).thenReturn(NORA).thenReturn(NORMAN).thenReturn(NORBERT);
         Assert.assertArrayEquals(new Character[]{'a', 'b', 'f'},
                 this.employeeService.mostCommonCharactersInEmployeesNames(3).toArray(new Character[3]));
