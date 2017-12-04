@@ -11,13 +11,14 @@ import java.io.IOException;
 
 public class EmployeeIteratorFactoryTest {
     private static final String INVALID_PATH = "src\\main\\java\\com\\test\\resources\\invalid file path.txt";
+    private static final String APPLICATION_PROPERTIES_FILE_PATH = "src/main/resources/application.properties";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Test(expected = IOException.class)
     public void getEmployeeIteratorShouldThrowExceptionWithInvalidPath() throws Exception {
-        IEmployeeIteratorFactory employeeIteratorFactory = new EmployeeIteratorFactoryFromFile(INVALID_PATH);
+        IEmployeeIteratorFactory employeeIteratorFactory = new EmployeeIteratorFactoryFromFile(INVALID_PATH, APPLICATION_PROPERTIES_FILE_PATH);
         employeeIteratorFactory.createEmployeeIterator();
         this.thrown.expect(IOException.class);
         this.thrown.reportMissingExceptionWithMessage("Exception expected");

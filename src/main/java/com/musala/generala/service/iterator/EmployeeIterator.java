@@ -17,10 +17,16 @@ class EmployeeIterator implements Iterator<Employee> {
     private String name;
     private int age;
     private double lengthOfService;
+    private String fieldSeparator = "=";
+    private String employeeSeparator = "<<>>";
+    private Map<String, String> applicationPropertiesData;
+    private String nameLabel = "name";
+    private String ageLabel = "age";
+    private String lengthOfServiceLabel = "lengthOfService";
 
-
-    EmployeeIterator(BufferedReader bufferedReader) {
+    EmployeeIterator(BufferedReader bufferedReader, Map<String, String> applicationPropertiesData) {
         this.bufferedReader = bufferedReader;
+        this.applicationPropertiesData = applicationPropertiesData;
     }
 
     @Override
@@ -48,7 +54,9 @@ class EmployeeIterator implements Iterator<Employee> {
     private void parseEmployee() {
         try {
             String line;
-            String employeeSeparator = getEmployeeSeparator();
+            try {
+                this.employeeSeparator = getEmployeeSeparator();
+            } catch (IOException e) {}
             while ((line = this.bufferedReader.readLine()) != null && !line.trim().equals(employeeSeparator)) {
                 parseLine(line);
             }
@@ -67,22 +75,22 @@ class EmployeeIterator implements Iterator<Employee> {
         }
     }
 
-    private void parseLine(String line) throws IOException {
-        String fieldSeparator = getFieldSeparator();
+    private void parseLine(String line) {
+        try {
+            this.fieldSeparator = getFieldSeparator();
+            this.nameLabel = getNameLabel();
+            this.ageLabel = getAgeLabel();
+            this.lengthOfServiceLabel = getLengthOfServiceLabel();
+        } catch (IOException e) {}
         String[] lineData = line.split(fieldSeparator);
         String key = lineData[0];
-        String value = lineData.length == 1 ? "" : lineData[1];
-        switch (key) {
-            case "name":
-                this.name = value.trim();
-                break;
-            case "age":
-                this.age = Integer.parseInt(value.trim());
-                break;
-            case "lengthOfService": {
-                this.lengthOfService = Double.parseDouble(value.trim());
-                break;
-            }
+        String value = lineData.length == 1 ? "" : lineData[1].trim();
+        if (key.equals(this.nameLabel)) {
+            this.name = value;
+        } else if (key.equals(this.ageLabel)) {
+            this.age = Integer.parseInt(value);
+        } else if (key.equals(this.lengthOfServiceLabel)) {
+            this.lengthOfService = Double.parseDouble(value);
         }
     }
 
@@ -97,36 +105,22 @@ class EmployeeIterator implements Iterator<Employee> {
     }
 
     private String getEmployeeSeparator() throws IOException {
-        Map<String, String> data = getDataFromSeparatorPropertiesFile();
-        return data.get("employeeSeparator");
+        return this.applicationPropertiesData.get("employeeSeparator");
     }
 
     private String getFieldSeparator() throws IOException {
-        Map<String, String> data = getDataFromSeparatorPropertiesFile();
-        return data.get("fieldSeparator");
+        return this.applicationPropertiesData.get("fieldSeparator");
     }
 
-    private Map<String, String> getDataFromSeparatorPropertiesFile() throws IOException {
-        Map<String, String> separatorPropertiesData = new HashMap<>();
-        String path = "src/main/resources/separators.properties";
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(path));
-            Properties properties = new Properties();
-            properties.load(reader);
-            Enumeration enuKeys = properties.keys();
-            while (enuKeys.hasMoreElements()) {
-                String key = (String) enuKeys.nextElement();
-                String value = properties.getProperty(key);
-                separatorPropertiesData.put(key, value);
-            }
-        } catch (FileNotFoundException e) {
-            LOGGER.error("There is no such file: {}", path);
-            throw e;
-        } catch (IOException e) {
-            LOGGER.error("There was problem loading the file: {}", path);
-            throw e;
-        }
+    private String getNameLabel() {
+        return this.applicationPropertiesData.get("nameLabel");
+    }
 
-        return separatorPropertiesData;
+    private String getAgeLabel() {
+        return this.applicationPropertiesData.get("ageLabel");
+    }
+
+    private String getLengthOfServiceLabel() {
+        return this.applicationPropertiesData.get("lengthOfServiceLabel");
     }
 }

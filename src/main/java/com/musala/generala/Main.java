@@ -10,12 +10,12 @@ import java.io.IOException;
 
 
 public class Main {
-    //    private static final String EMPTY_FILE = "C:\\Users\\kristina.drashkova\\IdeaProjects\\untitled\\src\\test\\resources\\empty  file.txt";
     private static final String RESOURCES_EMPLOYEE_DATA_PATH = "src/main/resources/employee data.txt";
+    private static final String APPLICATION_PROPERTIES_FILE_PATH = "src/main/resources/application.properties";
 
     public static void main(String[] args) throws NoEmployeesException, IOException {
         IEmployeeIteratorFactory employeeIteratorFactory =
-                new EmployeeIteratorFactoryFromFile(RESOURCES_EMPLOYEE_DATA_PATH);
+                new EmployeeIteratorFactoryFromFile(RESOURCES_EMPLOYEE_DATA_PATH, APPLICATION_PROPERTIES_FILE_PATH);
         IEmployeeService employeeService = new EmployeeService(employeeIteratorFactory);
         employeeService.logEmployeeInfo();
     }
