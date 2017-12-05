@@ -1,25 +1,47 @@
 package com.musala.generala.service;
 
+import com.musala.generala.exeptions.NoEmployeesException;
+
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public interface IEmployeeService {
 
-    void parse(String path) throws IOException;
+    /**
+     * Logs the information about the employees
+     */
+    void logEmployeeInfo() throws IOException, NoEmployeesException;
 
-    void getEmployeeInfo();
+    /**
+     * Returns the calculated average age
+     * from all the employees
+     *
+     * @return calculated average age
+     */
+    double averageAgeOfEmployees() throws IOException, NoEmployeesException;
 
-    void log(String status, String message, String parameters);
+    /**
+     * Returns calculated average length of service
+     * from all the employees
+     *
+     * @return calculated average length of service
+     */
+    double averageLengthOfServiceOfEmployees() throws IOException, NoEmployeesException;
 
-    double averageAgeOfEmployees();
+    /**
+     * Returns the maximum length of service
+     * from all the employees
+     *
+     * @return the maximum length of service
+     */
+    double maximumLengthOfServiceOfEmployee() throws IOException;
 
-    double averageLengthOfServiceOfEmployees();
-
-    double maximumLengthOfServiceOfEmployee();
-
-    List<Character> mostCommonCharactersInEmployeesNames();
-
-    LinkedHashMap<Character, Integer> countCharactersInEmployeeNames();
+    /**
+     * Returns list of the first three most common characters
+     * from all the names of all the employee names
+     *
+     * @return list of the first three most common characters
+     * from all the names
+     */
+    List<Character> mostCommonCharactersInEmployeesNames(int count) throws IOException;
 }

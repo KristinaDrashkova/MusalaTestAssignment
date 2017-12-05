@@ -1,13 +1,11 @@
-package com.test.java;
+package com.musala.generala;
 
 import com.musala.generala.models.Employee;
-import org.apache.log4j.PropertyConfigurator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static com.test.java.PredefinedEmployeeTestSubjects.CONFIG_FILENAME_TEST_PATH;
 
 public class EmployeeTest {
     @Rule
@@ -15,10 +13,10 @@ public class EmployeeTest {
 
     @Before
     public void initialize() {
-        PropertyConfigurator.configure(CONFIG_FILENAME_TEST_PATH);
         this.thrown.expect(IllegalArgumentException.class);
         this.thrown.reportMissingExceptionWithMessage("Exception expected");
     }
+
     @Test
     public void createEmployeeWithInvalidNameShouldThrowException() {
         this.thrown.expectMessage("Illegal employee name: ");
